@@ -49,7 +49,7 @@ exports.up = function (knex, Promise) {
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.timestamps(true, true);
     }),
-    knex.schema.createTableIfNotExists('availability', function(table) {
+    knex.schema.createTableIfNotExists('availabilities', function(table) {
       table.increments('id').unsigned().primary();
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.integer('start_hr').notNullable();
@@ -98,7 +98,7 @@ exports.down = function (knex, Promise) {
     knex.schema.dropTable('specialties'),
     knex.schema.dropTable('guide_specialty'),
     knex.schema.dropTable('chats'),
-    knex.schema.dropTable('availability'),
+    knex.schema.dropTable('availabilities'),
     knex.schema.dropTable('bookings')
   ]);
 };
