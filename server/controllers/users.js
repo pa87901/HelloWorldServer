@@ -17,7 +17,7 @@ module.exports.createUser = (req, res) => {
   models.User.forge({ username: req.body.username, first_name: req.body.firstName, last_name: req.body.lastName, email: req.body.email, phone: req.body.phone })
     .save()
     .then(result => {
-      res.status(200).send()
+      res.status(200).send();
       console.log('success creating user!!');
     })
     .error(err => {
