@@ -35,8 +35,8 @@ module.exports.getOneGuide = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  console.log(req.params)
-  models.Guide.query((qb) => {qb.limit(25)}).fetchAll()
+  console.log(req.params);
+  models.Guide.query((qb) => { qb.limit(25); }).fetchAll()
     .then(profiles => {
       if (!profiles) {
         throw profiles;

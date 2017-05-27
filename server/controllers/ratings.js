@@ -10,15 +10,15 @@ module.exports.createRating = (req, res) => {
         models.Rating.forge({user_id: result.id, guide_id: result3.id, rating: req.body.rating, rated_by: req.body.ratedBy})
         .save()
         .then(result4 => {
-          res.status(200).send()
-          console.log('Successfully created rating!!')
-        })
-      })
-    })
+          res.status(200).send();
+          console.log('Successfully created rating!!');
+        });
+      });
+    });
   })
   .error(err => {
-      res.status(500).send(err);
-    })
+    res.status(500).send(err);
+  })
     .catch(() => {
       res.sendStatus(404);
     });
