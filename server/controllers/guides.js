@@ -19,7 +19,6 @@ module.exports.createGuide = (req, res) => {
 };
 
 module.exports.getOneGuide = (req, res) => {
-  console.log(req.params)
   models.Guide.where({id: req.params.id}).fetch()
     .then(profile => {
       if (!profile) {
@@ -34,3 +33,29 @@ module.exports.getOneGuide = (req, res) => {
       res.sendStatus(404);
     });
 };
+
+module.exports.getSearchResults = (req, res) => {
+  console.log(req.params)
+  models.Guide.query((qb) => {qb.limit(25)}).fetchAll()
+    .then(profiles => {
+      if (!profiles) {
+        throw profiles;
+      }
+      res.status(200).send(profiles);
+    })
+    .error(err => {
+      res.status(500).send(err);
+    })
+    .catch(() => {
+      res.sendStatus(404);
+    });
+};
+
+// user.where({
+//     id: 43
+//   }).fetchAll({
+//     withRelated: ['feed.userRelated', 'feed.activityTypes']
+//   }).then(function(data) {
+//     data = data.toJSON();
+//     res.send(data);
+//   });

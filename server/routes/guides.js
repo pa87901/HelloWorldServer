@@ -14,4 +14,8 @@ router.route('/:id')
   // .delete(UserController.deleteOne)
   ;
 
+router.route('/search/:city&:date&:morning&:afternoon&:evening&:night')
+  .get(GuideController.getSearchResults)
+  ;
+
 module.exports = router;
