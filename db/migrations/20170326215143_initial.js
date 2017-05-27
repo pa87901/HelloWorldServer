@@ -45,7 +45,7 @@ exports.up = function (knex, Promise) {
     knex.schema.createTableIfNotExists('chats', function(table) {
       table.increments('id').unsigned().primary();
       table.text('message').nullable();
-      table.interger('user_id').references('users.id').onDelete('CASCADE');
+      table.integer('user_id').references('users.id').onDelete('CASCADE');
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.timestamps(true, true);
     }),
@@ -53,7 +53,7 @@ exports.up = function (knex, Promise) {
       table.increments('id').unsigned().primary();
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.integer('start_hr').notNullable();
-      table.interger('end_hr').notNullable();
+      table.integer('end_hr').notNullable();
       table.date('start_date').notNullable();
       table.date('end_date').notNullable();
       table.integer('day_of_week').notNullable();
@@ -61,18 +61,18 @@ exports.up = function (knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('bookings', function(table) {
       table.increments('id').unsigned().primary();
-      table.interger('user_id').references('users.id').onDelete('CASCADE');
+      table.integer('user_id').references('users.id').onDelete('CASCADE');
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.string('city', 100).notNullable();
       table.integer('start_hr').notNullable();
-      table.interger('end_hr').notNullable();
+      table.integer('end_hr').notNullable();
       table.date('start_date').notNullable();
       table.date('end_date').notNullable();
       table.string('status', 20).notNullable();
       table.string('cancelled_by', 20).nullable();
-      table.timeStamp('cancelled_at').nullable();
-      table.timeStamp('confirmed_at').nullable();
-      table.timeStamp('completed_at').nullable();
+      table.timestamp('cancelled_at').nullable();
+      table.timestamp('confirmed_at').nullable();
+      table.timestamp('completed_at').nullable();
       table.decimal('base_fee').nullable();
       table.decimal('tips').nullable();
       table.timestamps(true, true);
