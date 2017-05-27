@@ -1,7 +1,10 @@
 const models = require('../../db/models');
 
+
+models.User.fetchAll()
+
 module.exports.getAll = (req, res) => {
-  models.Profile.fetchAll()
+  models.User.fetchAll()
     .then(profiles => {
       res.status(200).send(profiles);
     })
