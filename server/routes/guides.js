@@ -1,15 +1,15 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers').Users;
+const GuideController = require('../controllers').Guides;
 
 router.route('/')
   // .get(UserController.getAll)
-  .post(UserController.createUser)
+  .post(GuideController.createGuide)
   ;
 
 router.route('/:id')
-  .get(UserController.getUser)
+  // .get(GuideController.getGuide)
   // .put(UserController.update)
   // .delete(UserController.deleteOne)
   ;
