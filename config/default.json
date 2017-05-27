@@ -3,7 +3,7 @@
     "client": "postgresql",
     "connection": {
       "database": "thesis",
-      "user": "predaanuvatnujotikul",
+      "user": "drew",
       "password": "",
       "host": "localhost",
       "port": 5432
