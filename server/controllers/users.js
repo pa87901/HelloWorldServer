@@ -1,8 +1,6 @@
 const models = require('../../db/models');
 
 
-models.User.fetchAll()
-
 module.exports.getAll = (req, res) => {
   models.User.fetchAll()
     .then(profiles => {
@@ -14,22 +12,25 @@ module.exports.getAll = (req, res) => {
     });
 };
 
-// module.exports.create = (req, res) => {
-//   models.Profile.forge({ username: req.body.username, password: req.body.password })
-//     .save()
-//     .then(result => {
-//       res.status(201).send(result.omit('password'));
-//     })
-//     .catch(err => {
-//       if (err.constraint === 'users_username_unique') {
-//         return res.status(403);
-//       }
-//       res.status(500).send(err);
-//     });
-// };
+module.exports.create = (req, res) => {
+  console.log('create req.body', req.body);
+  models.User.forge({ username: req.body.username, first_name: req.body.firstName, last_name: req.body.lastName, email: req.body.email, phone: req.body.phone })
+    .save()
+    .then(result => {
+      console.log('success creating user!!');
+      // res.status(201).send(result.omit('password'));
+    })
+    .catch(err => {
+      // if (err.constraint === 'users_username_unique') {
+      //   return res.status(403);
+      // }
+      console.log('error creating user');
+      // res.status(500).send(err);
+    });
+};
 
 module.exports.getOne = (req, res) => {
-  models.Profile.where({ id: req.params.id }).fetch()
+  models.User.where({ id: req.params.id }).fetch()
     .then(profile => {
       if (!profile) {
         throw profile;
@@ -45,7 +46,7 @@ module.exports.getOne = (req, res) => {
 };
 
 module.exports.update = (req, res) => {
-  models.Profile.where({ id: req.params.id }).fetch()
+  models.User.where({ id: req.params.id }).fetch()
     .then(profile => {
       if (!profile) {
         throw profile;
@@ -64,7 +65,7 @@ module.exports.update = (req, res) => {
 };
 
 // module.exports.deleteOne = (req, res) => {
-//   models.Profile.where({ id: req.params.id }).fetch()
+//   models.User.where({ id: req.params.id }).fetch()
 //     .then(profile => {
 //       if (!profile) {
 //         throw profile;
