@@ -7,7 +7,6 @@ module.exports.createChat = (req, res) => {
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
-        console.log(result3.id)
         models.Chat.forge({user_id: result.id, guide_id: result3.id, message: req.body.message, author: req.body.author})
         .save()
         .then(result4 => {
