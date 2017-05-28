@@ -23,7 +23,9 @@ app.use(express.static(path.join(__dirname, '../public')));
 // app.use('/', routes.auth);
 app.use('/api', routes.api);
 app.use('/api/users', routes.users);
-
+app.use('/api/guides', routes.guides);
+app.use('/api/ratings', routes.ratings);
+app.use('/api/chats', routes.chats);
 // app.post('api/users', (req, res) => {
 //   console.log('req.body in api/users post route', req.body);
 //   let user = {};
