@@ -25,8 +25,8 @@ module.exports.createChat = (req, res) => {
 };
 
 module.exports.getChat = (req, res) => {
-   console.log(req.params)
-   models.User.where({username: req.params.username}).fetch({columns: ['id']})
+  console.log(req.params);
+  models.User.where({username: req.params.username}).fetch({columns: ['id']})
   .then(result => {
     models.User.where({username: req.params.guideUsername}).fetch({columns: ['id']})
     .then(result2 => {
@@ -34,7 +34,8 @@ module.exports.getChat = (req, res) => {
       .then(result3 => {
         models.Chat.query((qb) => {
           qb.limit(100); 
-          qb.orderBy('created_at', 'desc');})
+          qb.orderBy('created_at', 'desc');
+        })
           .where({user_id: result.id, guide_id: result3.id}).fetchAll()
           .then(chats => {
             if (!chats) {
@@ -43,9 +44,9 @@ module.exports.getChat = (req, res) => {
             res.status(200).send(chats);
             console.log('Successfully fetched chats!!');
           });
-        });
       });
-    })
+    });
+  })
     .error(err => {
       res.status(500).send(err);
     })
