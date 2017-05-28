@@ -25,12 +25,26 @@ module.exports.createChat = (req, res) => {
 };
 
 module.exports.getChat = (req, res) => {
-  models.Guide.where({id: req.params.id}).fetch()
-    .then(profile => {
-      if (!profile) {
-        throw profile;
-      }
-      res.status(200).send(profile);
+   console.log(req.params)
+   models.User.where({username: req.params.username}).fetch({columns: ['id']})
+  .then(result => {
+    models.User.where({username: req.params.guideUsername}).fetch({columns: ['id']})
+    .then(result2 => {
+      models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
+      .then(result3 => {
+        models.Chat.query((qb) => {
+          qb.limit(100); 
+          qb.orderBy('created_at', 'desc');})
+          .where({user_id: result.id, guide_id: result3.id}).fetchAll()
+          .then(chats => {
+            if (!chats) {
+              throw chats;
+            }
+            res.status(200).send(chats);
+            console.log('Successfully fetched chats!!');
+          });
+        });
+      });
     })
     .error(err => {
       res.status(500).send(err);
