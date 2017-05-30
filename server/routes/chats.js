@@ -6,7 +6,7 @@ const ChatController = require('../controllers').Chat;
 router.route('/')
   .post(ChatController.createChat);
 
-router.route('/search/:username&:guideUsername')
+router.route('/:username/:guideUsername')
   .get(ChatController.getChat);
 
 module.exports = router;

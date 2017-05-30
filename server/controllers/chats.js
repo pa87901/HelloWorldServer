@@ -25,7 +25,7 @@ module.exports.createChat = (req, res) => {
 };
 
 module.exports.getChat = (req, res) => {
-  console.log(req.params);
+  console.log('REQ PARAMS', req.params);
   models.User.where({username: req.params.username}).fetch({columns: ['id']})
   .then(result => {
     models.User.where({username: req.params.guideUsername}).fetch({columns: ['id']})
