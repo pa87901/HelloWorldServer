@@ -1,4 +1,3 @@
-
 exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', function (table) {
@@ -33,7 +32,7 @@ exports.up = function (knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('specialties', function(table) {
       table.increments('id').unsigned().primary();
-      table.string('specialty').nullable();
+      table.string('specialty', 100).nullable().unique();
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('guide_specialty', function (table) {
