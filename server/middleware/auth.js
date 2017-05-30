@@ -1,10 +1,11 @@
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
-const redisClient = require('redis').createClient();
+//const RedisStore = require('connect-redis')(session);
+//const redisClient = require('redis').createClient();
 const JWT = require('jwt-async');
+const secret = require('../../config/authSecret.js').secret;
 
 var jwt = new JWT();
-jwt.setSecret('wfxy2qVrpjMzh0D2hIzImcB_iOLH97Eiq6yyvwWI6jyc6Q8M8RFyHnqTTKaL6_hK');
+jwt.setSecret(secret);
 
 module.exports.verify = function verify(req, res, next) {
   req.jwt_auth = false;
