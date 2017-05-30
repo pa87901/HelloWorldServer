@@ -3,3 +3,4 @@ module.exports.Guides = require('./guides');
 module.exports.Ratings = require('./ratings');
 module.exports.Chat = require('./chats');
 module.exports.Specialty = require('./specialties');
+module.exports.GuideSpecialty = require('./guideSpecialties');

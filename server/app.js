@@ -27,6 +27,7 @@ app.use('/api/guides', routes.guides);
 app.use('/api/ratings', routes.ratings);
 app.use('/api/chats', routes.chats);
 app.use('/api/specialties', routes.specialties);
+app.use('/api/guidespecialties', routes.guideSpecialties);
 // app.post('api/users', (req, res) => {
 //   console.log('req.body in api/users post route', req.body);
 //   let user = {};
