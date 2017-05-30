@@ -14,9 +14,6 @@ const User = db.Model.extend({
   bookings: () => {
     return this.hasMany('Booking');
   }
-  // auths: function() {
-  //   return this.hasMany('Auth');
-  // },
 });
 
 module.exports = db.model('User', User);

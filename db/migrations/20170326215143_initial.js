@@ -2,9 +2,8 @@ exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.createTableIfNotExists('users', function (table) {
       table.increments('id').unsigned().primary();
-      table.string('username', 100).nullable().unique();
-      table.string('first_name', 100).nullable();
-      table.string('last_name', 100).nullable();
+      table.string('facebook_id', 100).nullable().unique();
+      table.string('full_name', 100).nullable();
       table.boolean('guide').defaultTo(false);
       table.string('email', 100).nullable().unique();
       table.string('phone', 100).nullable();
@@ -54,9 +53,7 @@ exports.up = function (knex, Promise) {
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.integer('start_hr').notNullable();
       table.integer('end_hr').notNullable();
-      table.date('start_date').notNullable();
-      table.date('end_date').notNullable();
-      table.integer('day_of_week').notNullable();
+      table.date('date').notNullable();
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('bookings', function(table) {
@@ -66,9 +63,8 @@ exports.up = function (knex, Promise) {
       table.string('city', 100).notNullable();
       table.integer('start_hr').notNullable();
       table.integer('end_hr').notNullable();
-      table.date('start_date').notNullable();
-      table.date('end_date').notNullable();
-      table.string('status', 20).notNullable();
+      table.date('date').notNullable();
+      table.string('status', 20).defaultTo('requested');
       table.string('cancelled_by', 20).nullable();
       table.timestamp('cancelled_at').nullable();
       table.timestamp('confirmed_at').nullable();

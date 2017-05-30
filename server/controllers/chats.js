@@ -1,9 +1,9 @@
 const models = require('../../db/models');
 
 module.exports.createChat = (req, res) => {
-  models.User.where({username: req.body.username}).fetch({columns: ['id']})
+  models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({username: req.body.guideUsername}).fetch({columns: ['id']})
+    models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
@@ -26,9 +26,9 @@ module.exports.createChat = (req, res) => {
 
 module.exports.getChat = (req, res) => {
   console.log('REQ PARAMS', req.params);
-  models.User.where({username: req.params.username}).fetch({columns: ['id']})
+  models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({username: req.params.guideUsername}).fetch({columns: ['id']})
+    models.User.where({facebook_id: req.params.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {

@@ -1,7 +1,7 @@
 const models = require('../../db/models');
 
 module.exports.createGuide = (req, res) => {
-  models.User.where({username: req.body.username}).fetch({columns: ['id']})
+  models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
    .then(result => {
      models.Guide.forge({ user_id: result.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement})
       .save()
