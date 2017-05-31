@@ -1,9 +1,9 @@
 const models = require('../../db/models');
 
 module.exports.createRating = (req, res) => {
-  models.User.where({username: req.body.username}).fetch({columns: ['id']})
+  models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({username: req.body.guideUsername}).fetch({columns: ['id']})
+    models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id', 'statement']})
       .then(result3 => {

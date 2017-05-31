@@ -9,7 +9,7 @@ module.exports.createGuideSpecialty = (req, res) => {
           .then(successResult => {
             console.log('Successfully created specialty!!');
 
-            models.User.where({username: req.body.guideUsername}).fetch({columns: ['id']})
+            models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
             .then(result2 => {
               models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
               .then(result3 => {
@@ -26,14 +26,14 @@ module.exports.createGuideSpecialty = (req, res) => {
             });
           });
       } else {
-        models.User.where({username: req.body.guideUsername}).fetch({columns: ['id']})
+        models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
         .then(result2 => {
           models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
           .then(result3 => {
             
             models.GuideSpecialty.where({guide_id: result3.id, specialty_id: result.id}).count()
             .then(result4 => {
-              if (result4 === 0) {
+              if (result4 === '0') {
                 models.GuideSpecialty.forge({guide_id: result3.id, specialty_id: result.id})
                 .save()
                 .then(result4 => {

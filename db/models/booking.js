@@ -2,10 +2,10 @@ const db = require('../');
 
 const Booking = db.Model.extend({
   tableName: 'bookings',
-  user: () => {
+  user: function() {
     return this.belongsTo('User');
   },
-  guide: () => {
+  guide: function() {
     return this.belongsTo('Guide');
   }
 });

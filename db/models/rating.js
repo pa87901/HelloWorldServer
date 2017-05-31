@@ -2,10 +2,10 @@ const db = require('../');
 
 const Rating = db.Model.extend({
   tableName: 'ratings',
-  user: () => {
+  user: function() {
     return this.belongsTo('User');
   },
-  guide: () => {
+  guide: function() {
     return this.belongsTo('Guide');
   }  
 });

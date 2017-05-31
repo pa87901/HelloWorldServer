@@ -2,11 +2,11 @@ const db = require('../');
 
 const GuideSpecialty = db.Model.extend({
   tableName: 'guide_specialty',
-  guide: () => {
-    return this.belongsTo('Guide');
+  guide: function() {
+    return this.belongsTo('Guide', 'guide_id');
   },
-  specialty: () => {
-    return this.belongsTo('Specialty');
+  specialty: function() {
+    return this.belongsTo('Specialty', 'specialty_id');
   }  
 });
 

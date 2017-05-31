@@ -2,10 +2,10 @@ const db = require('../');
 
 const Chat = db.Model.extend({
   tableName: 'chats',
-  user: () => {
+  user: function() {
     return this.belongsTo('User');
   },
-  guide: () => {
+  guide: function() {
     return this.belongsTo('Guide');
   }
 });

@@ -6,3 +6,5 @@ module.exports.ratings = require('./ratings');
 module.exports.chats = require('./chats');
 module.exports.specialties = require('./specialties');
 module.exports.guideSpecialties = require('./guideSpecialties');
+module.exports.availabilities = require('./availabilities');
+module.exports.bookings = require('./bookings');

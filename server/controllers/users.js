@@ -14,7 +14,7 @@ const models = require('../../db/models');
 
 module.exports.createUser = (req, res) => {
   console.log('create req.body', req.body);
-  models.User.forge({ username: req.body.username, first_name: req.body.firstName, last_name: req.body.lastName, email: req.body.email, phone: req.body.phone })
+  models.User.forge({ facebook_id: req.body.facebookId, full_name: req.body.fullName, email: req.body.email, phone: req.body.phone })
     .save()
     .then(result => {
       res.status(200).send();
@@ -30,7 +30,7 @@ module.exports.createUser = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  models.User.where({ username: req.params.username}).fetch()
+  models.User.where({ facebook_id: req.params.facebookId}).fetch()
     .then(profile => {
       if (!profile) {
         throw profile;
