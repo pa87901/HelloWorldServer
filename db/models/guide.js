@@ -9,7 +9,7 @@ const Guide = db.Model.extend({
     return this.hasMany('Rating');
   },
   guideSpecialties: function() {
-    return this.hasMany('GuideSpecialty');
+    return this.hasMany('GuideSpecialty', 'guide_id');
   },
   chats: function() {
     return this.hasMany('Chat');
