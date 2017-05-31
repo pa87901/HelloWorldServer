@@ -24,3 +24,24 @@ module.exports.createBooking = (req, res) => {
     res.sendStatus(404);
   });   
 };
+
+module.exports.updateBookingStatus = (req, res) => {
+  console.log('BODY', req.body.status);
+  models.Booking.where({id: req.body.bookingId}).fetch()
+  .then(fetchedModel => {
+    fetchedModel.save({
+      status: req.body.status
+    })
+    .then(result => {
+      res.status(200).send();
+      console.log('Successfully updated booking!');
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error updating booking.');
+    res.sendStatus(404);
+  });   
+};

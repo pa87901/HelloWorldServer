@@ -5,6 +5,7 @@ const BookingController = require('../controllers').Bookings;
 
 router.route('/')
   .post(BookingController.createBooking)
+  .put(BookingController.updateBookingStatus)
   ;
 
 module.exports = router;
