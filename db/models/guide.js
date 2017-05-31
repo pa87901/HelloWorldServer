@@ -2,28 +2,25 @@ const db = require('../');
 
 const Guide = db.Model.extend({
   tableName: 'guides',
-  user: () => {
-    return this.belongsTo('User');
+  user: function() {
+    return this.belongsTo('User', 'user_id');
   },
-  ratings: () => {
+  ratings: function() {
     return this.hasMany('Rating');
   },
-  guideSpecialties: () => {
+  guideSpecialties: function() {
     return this.hasMany('GuideSpecialty');
   },
-  chats: () => {
+  chats: function() {
     return this.hasMany('Chat');
   },
-  availabilities: () => {
-    return this.hasMany('Availability');
+  availabilities: function() {
+    return this.hasMany('Availability', 'guide_id');
   },
-  bookings: () => {
+  bookings: function() {
     return this.hasMany('Booking');
   }
 
-  // auths: function() {
-  //   return this.hasMany('Auth');
-  // }
 });
 
 module.exports = db.model('Guide', Guide);

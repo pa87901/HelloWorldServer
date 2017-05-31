@@ -2,8 +2,8 @@ const db = require('../');
 
 const Availability = db.Model.extend({
   tableName: 'availabilities',
-  guide: () => {
-    return this.belongsTo('Guide');
+  guide: function() {
+    return this.belongsTo('Guide', 'guide_id');
   }
 });
 

@@ -2,17 +2,17 @@ const db = require('../');
 
 const User = db.Model.extend({
   tableName: 'users',
-  guide: () => {
-    return this.hasOne('Guide');
+  guide: function() {
+    return this.hasOne('Guide', 'user_id');
   },
-  chats: () => {
+  chats: function() {
     return this.hasMany('Chat');
   },
-  ratings: () => {
+  ratings: function() {
     return this.hasMany('Rating');
   },
-  bookings: () => {
-    return this.hasMany('Booking');
+  bookings: function() {
+    return this.hasMany('Booking', 'user_id');
   }
 });
 

@@ -36,19 +36,30 @@ module.exports.getOneGuide = (req, res) => {
 
 module.exports.getSearchResults = (req, res) => {
   console.log(req.params);
-  models.Guide.query((qb) => { qb.limit(25); }).fetchAll()
-    .then(profiles => {
-      if (!profiles) {
-        throw profiles;
-      }
-      res.status(200).send(profiles);
-    })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
-      res.sendStatus(404);
-    });
+  models.Guide.query((qb) => {
+    qb.limit(25);
+    // qb.innerJoin('guide_specialty', 'guides.id', 'guide_specialty.guide_id').innerJoin('specialties', '')
+  })
+  .where({
+    'guides.city': req.params.city,
+  })
+  .fetchAll({
+    // columns: ['guides.user_id', 'guides.img_url', 'guides.avg_rating', 'guides.intro', 'guide_specialty.specialty_id'],
+    withRelated: ['availabilities'],
+  })
+  .then(profiles => {
+    if (!profiles) {
+      throw profiles;
+    }
+    res.status(200).send(profiles);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch((error) => {
+    res.sendStatus(404);
+    console.log('error getting search results.', error);
+  });
 };
 
 // user.where({

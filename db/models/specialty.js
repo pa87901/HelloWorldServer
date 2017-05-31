@@ -2,7 +2,7 @@ const db = require('../');
 
 const Specialty = db.Model.extend({
   tableName: 'specialties',
-  guideSpecialties: () => {
+  guideSpecialties: function() {
     return this.hasMany('GuideSpecialty');
   }
 });
