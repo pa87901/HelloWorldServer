@@ -46,7 +46,7 @@ module.exports.getSearchResults = (req, res) => {
     withRelated: [
       {
         'availabilities': function(qb) {
-          qb.where({date: new Date(req.params.date)});
+          qb.where('date', new Date(req.params.date));
         }
       },
       {
