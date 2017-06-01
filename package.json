@@ -53,6 +53,7 @@
     "webpack": "^2.3.2",
     "webpack-dev-server": "^2.4.2"
   },
+  "engine": "node >= 6.4.0",
   "babel": {
     "plugins": [
       "transform-es2015-modules-commonjs"
