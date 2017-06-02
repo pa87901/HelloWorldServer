@@ -14,6 +14,10 @@ router.route('/:id')
   // .delete(UserController.deleteOne)
   ;
 
+router.route('/byChat/:id')
+  .get(GuideController.getGuideByChat)
+  ;
+
 router.route('/search/:city/:date')
   .get(GuideController.getSearchResults)
   ;

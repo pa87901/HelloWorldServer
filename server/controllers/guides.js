@@ -15,7 +15,7 @@ module.exports.createGuide = (req, res) => {
     })
     .catch(() => {
       res.sendStatus(404);
-    });   
+    });
 };
 
 module.exports.getOneGuide = (req, res) => {
@@ -34,6 +34,23 @@ module.exports.getOneGuide = (req, res) => {
       }
     ]
   })
+  .then(profile => {
+    if (!profile) {
+      throw profile;
+    }
+    res.status(200).send(profile);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    res.sendStatus(404);
+  });
+};
+
+module.exports.getGuideByChat = (req, res) => {
+  models.Guide.where({id: req.params.id})
+  .fetch()
   .then(profile => {
     if (!profile) {
       throw profile;

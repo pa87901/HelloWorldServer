@@ -51,3 +51,4 @@ config/default.json
 #Linter
 .eslintrc
 
+server/socketio.js
