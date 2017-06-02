@@ -49,4 +49,5 @@ config/authSecret.js
 config/default.json
 
 #Linter
-.eslint
+.eslintrc
+
