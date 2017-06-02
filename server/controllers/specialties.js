@@ -10,8 +10,8 @@ module.exports.createSpecialty = (req, res) => {
     .error(err => {
       res.status(500).send(err);
     })
-    .catch(() => {
-      console.log('There is an error creating specialty.');
+    .catch((error) => {
+      console.log('There is an error creating specialty.', error);
       res.sendStatus(404);
     });
 };
