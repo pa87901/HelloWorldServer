@@ -13,7 +13,7 @@ const models = require('../../db/models');
 // };
 
 module.exports.createUser = (req, res) => {
-  console.log('create req.body',  req.body.extraInfo);
+  console.log('create req.body',  req.body);
   models.User.forge({ facebook_id: req.body.userId, full_name: req.body.name, email: req.body.email/*, phone: req.body.phone, avatar: req.body.picture, picture: req.body.extraInfo.picture_large */})
     .save()
     .then(result => {
