@@ -82,7 +82,8 @@ module.exports.getAllChatsByUser = (req, res) => {
     .error(err => {
       res.status(500).send(err);
     })
-    .catch(() => {
+    .catch((error) => {
       res.sendStatus(404);
+      console.log(error);
     });
 };
