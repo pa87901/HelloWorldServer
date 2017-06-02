@@ -5,6 +5,7 @@ config/staging.json
 config/test.json
 config/default.json
 
+
 # OS X
 .DS_Store
 
@@ -46,3 +47,6 @@ config/authSecret.js
 # Then in terminal command line type: knex migrate:latest.
 # This will migrate the latest version of knex schema to psql db.
 config/default.json
+
+#Linter
+.eslint

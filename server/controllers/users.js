@@ -13,8 +13,8 @@ const models = require('../../db/models');
 // };
 
 module.exports.createUser = (req, res) => {
-  console.log('create req.body', req.body);
-  models.User.forge({ facebook_id: req.body.facebookId, full_name: req.body.fullName, email: req.body.email, phone: req.body.phone })
+  console.log('create req.body',  req.body.extraInfo);
+  models.User.forge({ facebook_id: req.body.userId, full_name: req.body.name, email: req.body.email/*, phone: req.body.phone */})
     .save()
     .then(result => {
       res.status(200).send();
@@ -24,7 +24,8 @@ module.exports.createUser = (req, res) => {
       res.status(500).send(err);
       console.log('error creating user!!');
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       res.sendStatus(404);
     });
 };
