@@ -45,6 +45,11 @@ module.exports.getSearchResults = (req, res) => {
   .fetchAll({
     withRelated: [
       {
+        'user': function(qb) {
+          qb.select();
+        }
+      },
+      {
         'availabilities': function(qb) {
           qb.where('date', new Date(req.params.date));
         }
