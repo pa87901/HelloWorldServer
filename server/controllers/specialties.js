@@ -3,7 +3,7 @@ const models = require('../../db/models');
 module.exports.updateSpecialties = (req, res) => {
   models.Specialty.where({specialty: req.body.specialty}).fetch({columns: ['id']})
   .then(result => {
-    if (!result.id) {
+    if (!result) {
       models.Specialty.forge({specialty: req.body.specialty})
       .save()
       .then(result2 => {
