@@ -67,7 +67,7 @@ module.exports.getGuideByChat = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  console.log(req.params);
+  console.log('guides get search results', req.params);
   models.Guide.query((qb) => {
     qb.limit(25);
   })
@@ -83,7 +83,8 @@ module.exports.getSearchResults = (req, res) => {
       },
       {
         'availabilities': function(qb) {
-          qb.where('date', new Date(req.params.date));
+          //qb.where('date', new Date(req.params.date));
+          qb.where('date', '2018-05-05');
         }
       },
       {
