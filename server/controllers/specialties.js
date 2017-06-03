@@ -10,20 +10,40 @@ module.exports.updateSpecialties = (req, res) => {
         console.log('Successfully created specialty!');
         models.Specialty.where({specialty: req.body.specialty}).fetch({columns: ['id']})
         .then(result3 => {
-          models.GuideSpecialty.forge({guide_id: req.body.facebookId, specialty_id: result3.id})
-          .save()
+          models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
           .then(result4 => {
-            res.status(200).send();
-            console.log('Successfully created guideSpecialty!');
+            models.Guide.where({user_id: result4.id}).fetch({columns: ['id']})
+            .then(result5 => {
+              models.GuideSpecialty.forge({guide_id: result5.id, specialty_id: result3.id})
+              .save()
+              .then(result6 => {
+                res.status(200).send();
+                console.log('Successfully created guideSpecialty!');
+              });
+            });
           });
         });
       });
     } else {
-      models.GuideSpecialty.forge({guide_id: req.body.facebookId, specialty_id: result.id})
-      .save()
-      .then(result5 => {
-        res.status(200).send();
-        console.log('Successfully created guideSpecialty!');
+      models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
+      .then(result7 => {
+        models.Guide.where({user_id: result7.id}).fetch({columns: ['id']})
+        .then(result8 => {
+          models.GuideSpecialty.where({guide_id: result8.id, specialty_id: result.id}).fetch({columns: ['id']})
+          .then(result9 => {
+            if (!result9) {
+              models.GuideSpecialty.forge({guide_id: result8.id, specialty_id: result.id})
+              .save()
+              .then(result5 => {
+                res.status(200).send();
+                console.log('Successfully created guideSpecialty!');
+              });
+            } else {
+              res.status(200).send();
+              console.log('Guidespecialty already exists!');
+            }
+          });
+        });
       });
     }
   })
