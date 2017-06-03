@@ -4,7 +4,7 @@ module.exports.createChat = (req, res) => {
   console.log('req.body in createChat method', req.body);
   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
+    models.User.where({id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
@@ -83,7 +83,7 @@ module.exports.getAllChatsByUser = (req, res) => {
       res.status(500).send(err);
     })
     .catch((error) => {
-      res.sendStatus(404);
+      res.status(404).send([]);
       console.log(error);
     });
 };
