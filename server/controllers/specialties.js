@@ -107,3 +107,33 @@ module.exports.getSpecialties = (req, res) => {
     res.sendStatus(404);
   });
 };
+
+module.exports.deleteSpecialties = (req, res) => {
+  models.Specialty.where({specialty: req.params.specialty}).fetch({columns: ['id']})
+  .then(result => {
+    if (!result) {
+      res.status(200).send();
+      console.log('The specialty doesn\'t exist and doesn\'t need to be deleted');
+    } else {
+      models.User.where({facebook_id: 'facebook|' + req.params.facebookId}).fetch({columns: ['id']})
+      .then(result2 => {
+        models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
+        .then(result3 => {
+          models.GuideSpecialty.where({guide_id: result3.id, specialty_id: result.id})
+          .destroy()
+          .then(result4 => {
+            res.status(200).send();
+            console.log('Successfully deleted guidespecialty!');
+          });
+        });
+      });
+    }
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(err => {
+    console.log('There is an error deleting guidespecialty.', err);
+    res.sendStatus(404);
+  });
+};

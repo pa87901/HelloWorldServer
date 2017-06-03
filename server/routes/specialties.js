@@ -7,6 +7,10 @@ router.route('/')
   .post(SpecialtyController.updateSpecialties)
   ;
 
+router.route('/delete/:facebookId/:specialty')
+  .delete(SpecialtyController.deleteSpecialties)
+  ;
+  
 router.route('/:id')
   .get(SpecialtyController.getSpecialties)
   ;
