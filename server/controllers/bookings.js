@@ -1,13 +1,15 @@
 const models = require('../../db/models');
 
 module.exports.createBooking = (req, res) => {
-  models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
+  console.log(req.body);
+  models.User.where({facebook_id: req.body.travelerId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
+    models.User.where({facebook_id: req.body.user.facebook_id}).fetch({columns: ['id']})
     .then(result2 => {
+      console.log('result2', result2, req.body.user.facebook_id);
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
-        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_hr: req.body.startHr, end_hr: req.body.endHr, date: new Date(req.body.date)})
+        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_hr: '9', end_hr: '9', date: '5/5/2018'})
         .save()
         .then(result => {
           console.log('success creating booking!!');
@@ -19,8 +21,8 @@ module.exports.createBooking = (req, res) => {
   .error(err => {
     res.status(500).send(err);
   })
-  .catch(() => {
-    console.log('error creating booking.');
+  .catch((err) => {
+    console.log('error creating booking.', err);
     res.sendStatus(404);
   });   
 };
