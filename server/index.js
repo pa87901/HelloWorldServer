@@ -31,7 +31,9 @@ let messages = [{
 // Listen on connection event for incoming sockets.
 io.on('connection', (socket) => {
   console.log('A user connected to socket.io messenger app.', socket.handshake.query);
-
+  // socket.on('room', room => {
+  //   socket.join(room);
+  // })
   const chatsController = require('./controllers/chats');
   // io.emit('chat message', messages);
   // Get messages from db and emit them back to client.
