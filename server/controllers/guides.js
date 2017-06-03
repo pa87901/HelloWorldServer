@@ -76,9 +76,7 @@ module.exports.getSearchResults = (req, res) => {
   models.Guide.query((qb) => {
     qb.limit(25);
   })
-  .where({
-    'guides.city': req.params.city,
-  })
+  //.where({})
   .fetchAll({
     withRelated: [
       {
@@ -88,8 +86,9 @@ module.exports.getSearchResults = (req, res) => {
       },
       {
         'availabilities': function(qb) {
+   
           //qb.where('date', new Date(req.params.date));
-          qb.where('date', '2018-05-05');
+          qb.where('date', '2018-05-05').andWhere('city', req.params.city);
         }
       },
       {
