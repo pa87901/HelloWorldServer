@@ -35,11 +35,9 @@ io.on('connection', (socket) => {
   let privateRoomToJoin = socket.handshake.query.userId + '-' + socket.handshake.query.guideId;
   socket.on('room', room => {
     socket.join('AlexLiang');
-    // console.log('INSIDE A ROOM?');
   });
   socket.emit('connect'); //Send action to client to tell it to join room.
   const chatsController = require('./controllers/chats');
-  // io.emit('chat message', messages);
   // Get messages from db and emit them back to client.
   let req = {
     params: {
@@ -48,7 +46,6 @@ io.on('connection', (socket) => {
     }
   };
   chatsController.getChat(req, null, (data) => {
-    // console.log('chatsRetreived', data);
     io.emit('chat message', JSON.parse(JSON.stringify(data)));
   });
 
