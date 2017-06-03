@@ -4,7 +4,7 @@ const router = express.Router();
 const SpecialtyController = require('../controllers').Specialty;
 
 router.route('/')
-  .post(SpecialtyController.createSpecialty)
+  .post(SpecialtyController.updateSpecialties)
   ;
 
 router.route('/:id')
