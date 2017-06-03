@@ -31,9 +31,13 @@ let messages = [{
 // Listen on connection event for incoming sockets.
 io.on('connection', (socket) => {
   console.log('A user connected to socket.io messenger app.', socket.handshake.query);
-  // socket.on('room', room => {
-  //   socket.join(room);
-  // })
+  // Configure private room as client does.
+  let privateRoomToJoin = socket.handshake.query.userId + '-' + socket.handshake.query.guideId;
+  socket.on('room', room => {
+    socket.join('AlexLiang');
+    // console.log('INSIDE A ROOM?');
+  });
+  socket.emit('connect'); //Send action to client to tell it to join room.
   const chatsController = require('./controllers/chats');
   // io.emit('chat message', messages);
   // Get messages from db and emit them back to client.
@@ -51,12 +55,9 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg) => {
     console.log('Server received a chat msg', msg);
-    // let message = msg[0];
-    io.emit('new message', msg);
+    io.to('AlexLiang').emit('new message', msg);
 
     msg.forEach(message => {
-      // messages.unshift(message);
-
       // Put this received message to the database.
       // Format to flat {} structure.
       let dbFormattedMessage = {
@@ -74,7 +75,6 @@ io.on('connection', (socket) => {
       chatsController.createChat(req);
     });
     console.log('message: ' + msg, 'all messages: ', messages);
-    // io.emit('chat message', messages);
   });
 
   // When this connection disconnects...
