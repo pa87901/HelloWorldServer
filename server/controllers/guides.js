@@ -1,5 +1,6 @@
 const models = require('../../db/models');
 
+// ANTIQUATED
 module.exports.createGuide = (req, res) => {
   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
    .then(result => {

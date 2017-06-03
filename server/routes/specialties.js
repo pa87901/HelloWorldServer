@@ -4,6 +4,11 @@ const router = express.Router();
 const SpecialtyController = require('../controllers').Specialty;
 
 router.route('/')
-  .post(SpecialtyController.createSpecialty);
+  .post(SpecialtyController.createSpecialty)
+  ;
+
+router.route('/:id')
+  .get(SpecialtyController.getSpecialties)
+  ;
 
 module.exports = router;
