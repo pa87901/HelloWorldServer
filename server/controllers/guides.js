@@ -87,8 +87,8 @@ module.exports.getSearchResults = (req, res) => {
       {
         'availabilities': function(qb) {
    
-          //qb.where('date', new Date(req.params.date));
-          qb.where('date', '2018-05-05').andWhere('city', req.params.city);
+          qb.where('date', req.params.date).andWhere('city', req.params.city);
+          // qb.where('date', '2017-11-11');
         }
       },
       {
