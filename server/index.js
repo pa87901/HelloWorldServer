@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
   // Configure private room as client does.
   let privateRoomToJoin = socket.handshake.query.userId + '-' + socket.handshake.query.guideId;
   socket.on('room', room => {
-    socket.join(privateRoomToJoin);
+    socket.join('AlexLiang');
   });
   socket.emit('connect'); //Send action to client to tell it to join room.
   const chatsController = require('./controllers/chats');
