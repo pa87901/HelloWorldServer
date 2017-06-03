@@ -6,19 +6,15 @@ exports.up = function (knex, Promise) {
       table.string('full_name', 100).nullable();
       table.boolean('guide').defaultTo(false);
       table.string('email', 100).nullable().unique();
-      table.string('phone', 100).nullable();
+      table.string('avatar', 255).nullable();
+      table.string('picture', 255).nullable();
       table.decimal('avg_rating').defaultTo(0);
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('guides', function(table) {
       table.increments('id').unsigned().primary();
       table.integer('user_id').references('users.id').onDelete('CASCADE');
-      table.string('city', 100).notNullable();
-      table.decimal('hourly_rate').notNullable();
-      table.text('intro').nullable();
-      table.text('statement').nullable();
       table.decimal('avg_rating').defaultTo(0);
-      table.string('img_url', 255).nullable();
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('ratings', function(table) {
@@ -51,6 +47,10 @@ exports.up = function (knex, Promise) {
     knex.schema.createTableIfNotExists('availabilities', function(table) {
       table.increments('id').unsigned().primary();
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
+      table.string('city', 100).notNullable();
+      table.decimal('hourly_rate').notNullable();
+      table.text('intro').nullable();
+      table.text('statement').nullable();
       table.integer('start_hr').notNullable();
       table.integer('end_hr').notNullable();
       table.date('date').notNullable();
@@ -73,16 +73,6 @@ exports.up = function (knex, Promise) {
       table.decimal('tips').nullable();
       table.timestamps(true, true);
     }),
-
-
-    // knex.schema.createTableIfNotExists('auths', function(table) {
-    //   table.increments('id').unsigned().primary();
-    //   table.string('type', 8).notNullable();
-    //   table.string('oauth_id', 30).nullable();
-    //   table.string('password', 100).nullable();
-    //   table.string('salt', 100).nullable();
-    //   table.integer('profile_id').references('profiles.id').onDelete('CASCADE');
-    // })
   ]);
 };
 
