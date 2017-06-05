@@ -11,6 +11,9 @@ router.route('/')
 router.route('/all/:facebookId')
   .get(ChatController.getAllChatsByUser);
 
+router.route('/byGuideId/:guideId')
+  .get(ChatController.getAllChatsByGuideId);
+
 router.route('/:facebookId/:guideFacebookId')
   .get(ChatController.getChat);
 

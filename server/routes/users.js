@@ -8,10 +8,15 @@ router.route('/')
   .post(UserController.createUser)
   ;
 
-router.route('/:id')
+router.route('/:facebookId')
   .get(UserController.getUser)
   // .put(UserController.update)
   // .delete(UserController.deleteOne)
   ;
+
+router.route('/byUserId/:id')
+  .get(UserController.getUserById)
+  ;
+  
 
 module.exports = router;

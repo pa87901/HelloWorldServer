@@ -87,3 +87,34 @@ module.exports.getAllChatsByUser = (req, res) => {
       console.log(error);
     });
 };
+
+module.exports.getAllChatsByGuideId = (req, res) => {
+  console.log('REQ PARAMS2', req.params);
+  models.Chat.where({guide_id: req.params.guideId}).fetch()
+  .then(chats => {
+    console.log('Received chats by guideId', chats);
+    res.status(200).send(chats);
+  })
+  // models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
+  // .then(result => {
+  //   models.Chat.query((qb) => {
+  //     qb.limit(100); 
+  //     qb.orderBy('created_at', 'desc');
+  //   })
+  //     .where({user_id: result.id}).fetchAll()
+  //     .then(chats => {
+  //       if (!chats) {
+  //         throw chats;
+  //       }
+  //       res.status(200).send(chats);
+  //       console.log('Successfully fetched all chats for user!!');
+  //     });
+  // })
+    .error(err => {
+      res.status(500).send(err);
+    })
+    .catch((error) => {
+      res.status(404).send([]);
+      console.log(error);
+    });
+};
