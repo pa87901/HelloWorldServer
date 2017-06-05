@@ -46,6 +46,22 @@ module.exports.getUser = (req, res) => {
     });
 };
 
+module.exports.getUserById = (req, res) => {
+  models.User.where({ id: req.params.id}).fetch()
+    .then(profile => {
+      if (!profile) {
+        throw profile;
+      }
+      res.status(200).send(profile);
+    })
+    .error(err => {
+      res.status(500).send(err);
+    })
+    .catch(() => {
+      res.sendStatus(404);
+    });
+};
+
 // module.exports.update = (req, res) => {
 //   models.User.where({ id: req.params.id }).fetch()
 //     .then(profile => {

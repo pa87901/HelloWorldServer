@@ -26,7 +26,6 @@ app.use('/api/users', routes.users);
 app.use('/api/guides', routes.guides);
 app.use('/api/ratings', routes.ratings);
 app.use('/api/chats', routes.chats);
-// app.use('/api/allchats', routes.allChats);
 app.use('/api/specialties', routes.specialties);
 app.use('/api/guidespecialties', routes.guideSpecialties);
 app.use('/api/availabilities', routes.availabilities);

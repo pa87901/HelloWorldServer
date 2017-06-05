@@ -55,6 +55,7 @@ module.exports.getOneGuide = (req, res) => {
 };
 
 module.exports.getGuideByChat = (req, res) => {
+  console.log('req.params in getGuideByChat method', req.params);
   models.Guide.where({id: req.params.id})
   .fetch()
   .then(profile => {
@@ -62,6 +63,26 @@ module.exports.getGuideByChat = (req, res) => {
       throw profile;
     }
     res.status(200).send(profile);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    res.sendStatus(404);
+  });
+};
+
+module.exports.getGuideByUserId = (req, res) => {
+  console.log('req.params in getGuideByUserId method', req.params);
+  models.User.where({facebook_id: req.params.facebookId})
+  .fetch()
+  .then(profile => {
+    console.log(profile.attributes.id);
+    models.Guide.where({user_id: profile.attributes.id}).fetch({columns: ['id']})
+    .then(guideInfo => {
+      console.log(guideInfo);
+      res.status(200).send(guideInfo);
+    });
   })
   .error(err => {
     res.status(500).send(err);
