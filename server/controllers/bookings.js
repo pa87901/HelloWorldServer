@@ -46,8 +46,6 @@ module.exports.updateBookingStatus = (req, res) => {
 };
 
 module.exports.getUserBookings = (req, res) => {
-  console.log(req.params.facebookId);
-
   models.User.where({facebook_id: req.params.facebookId})
   .fetchAll({
     withRelated: [
@@ -59,8 +57,34 @@ module.exports.getUserBookings = (req, res) => {
     ]
   })
   .then(result => {
-    console.log('successfully retrieved booking information!', result);
+    console.log('successfully retrieved booking information!');
     res.status(200).send(result);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error retrieving booking.');
+    res.sendStatus(404);
+  });   
+};
+
+module.exports.getGuideBookings = (req, res) => {
+  models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
+  .then(result => {
+    models.Guide.where({user_id: result.id}).fetchAll({
+      withRelated: [
+        {
+          'bookings': function(qb) {
+            qb.select();
+          }
+        }
+      ]
+    })
+    .then(result2 => {
+      console.log('successfully retrieved booking information!');
+      res.status(200).send(result2);
+    });
   })
   .error(err => {
     res.status(500).send(err);

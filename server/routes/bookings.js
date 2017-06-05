@@ -12,5 +12,8 @@ router.route('/user/:facebookId')
   .get(BookingController.getUserBookings)
   ;
 
+router.route('/guide/:facebookId')
+  .get(BookingController.getGuideBookings)
+  ;
 
 module.exports = router;
