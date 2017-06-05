@@ -26,7 +26,6 @@ module.exports.createBooking = (req, res) => {
 };
 
 module.exports.updateBookingStatus = (req, res) => {
-  console.log('BODY', req.body.status);
   models.Booking.where({id: req.body.bookingId}).fetch()
   .then(fetchedModel => {
     fetchedModel.save({
@@ -42,6 +41,32 @@ module.exports.updateBookingStatus = (req, res) => {
   })
   .catch(() => {
     console.log('error updating booking.');
+    res.sendStatus(404);
+  });   
+};
+
+module.exports.getUserBookings = (req, res) => {
+  console.log(req.params.facebookId);
+
+  models.User.where({facebook_id: req.params.facebookId})
+  .fetchAll({
+    withRelated: [
+      {
+        'bookings': function(qb) {
+          qb.select();        
+        }
+      }
+    ]
+  })
+  .then(result => {
+    console.log('successfully retrieved booking information!', result);
+    res.status(200).send(result);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error retrieving booking.');
     res.sendStatus(404);
   });   
 };

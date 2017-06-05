@@ -8,4 +8,9 @@ router.route('/')
   .put(BookingController.updateBookingStatus)
   ;
 
+router.route('/user/:facebookId')
+  .get(BookingController.getUserBookings)
+  ;
+
+
 module.exports = router;
