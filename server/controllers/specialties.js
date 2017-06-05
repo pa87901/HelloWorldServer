@@ -76,9 +76,13 @@ module.exports.getSpecialties = (req, res) => {
               }
             ]
           })
-          .then(specialties => {
-            console.log('Successfully retrieved specialties.');
+          .then(result4 => {
+            var specialties = [];
+            result4[0].guideSpecialties.forEach(specialtyObj => {
+              specialties.push(specialtyObj.specialty.specialty);
+            });
             res.status(200).send(specialties);
+            console.log('Successfully retrieved specialties.');
           });
         });
       } else {
