@@ -18,6 +18,10 @@ router.route('/byChat/:id')
   .get(GuideController.getGuideByChat)
   ;
 
+router.route('/byUserId/:facebookId')
+  .get(GuideController.getGuideByUserId)
+  ;
+
 router.route('/search/:city/:date')
   .get(GuideController.getSearchResults)
   ;
