@@ -13,20 +13,23 @@ const models = require('../../db/models');
 // };
 
 module.exports.createUser = (req, res) => {
-  console.log('create req.body', req.body);
-  models.User.forge({ facebook_id: req.body.userId, full_name: req.body.name, email: req.body.email, avatar: req.body.picture, picture: req.body.extraInfo.picture_large })
+  models.User.forge({
+    facebook_id: req.body.userId, 
+    full_name: req.body.name, 
+    email: req.body.email, 
+    avatar: req.body.picture, 
+    picture: req.body.extraInfo.picture_large
+  })
     .save()
     .then(result => {
-      res.status(200).send();
-      console.log('success creating user!!');
+      if(result){
+        res.status(201).send('success creating user!!');
+      }
     })
-    .error(err => {
-      res.status(500).send(err);
-      console.log('error creating user!!');
-    })
-    .catch((error) => {
-      console.log(error);
-      res.sendStatus(404);
+    .catch((err) => {
+      if(err){
+        res.status(500).send(err);
+      }
     });
 };
 
@@ -38,27 +41,29 @@ module.exports.getUser = (req, res) => {
       }
       res.status(200).send(profile);
     })
-    .error(err => {
-      res.status(500).send(err);
-    })
-    .catch(() => {
-      res.sendStatus(404);
+    .catch((err) => {
+      if(err){
+        res.send(500).send(err);
+      }
     });
 };
 
 module.exports.getUserById = (req, res) => {
+  req.params.id = Number(req.params.id);
   models.User.where({ id: req.params.id}).fetch()
     .then(profile => {
+      console.log('profiles', profile);
       if (!profile) {
         throw profile;
       }
       res.status(200).send(profile);
     })
-    .error(err => {
+    // .error(err => {
+    //   res.status(500).send(err);
+    // })
+    .catch((err) => {
       res.status(500).send(err);
-    })
-    .catch(() => {
-      res.sendStatus(404);
+//      res.sendStatus(404);
     });
 };
 
