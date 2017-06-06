@@ -5,7 +5,7 @@ const http = require('http').Server(app);
 module.exports.http = http;
 const db = require('../db');
 const PORT = process.env.port || 3000;
-
+const worker = require('./workers');
 
 /////////////////////////////////////////////
 

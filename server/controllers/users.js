@@ -67,6 +67,41 @@ module.exports.getUserById = (req, res) => {
     });
 };
 
+module.exports.getUserById = (req, res) => {
+  req.params.id = Number(req.params.id);
+  models.User.where({ id: req.params.id}).fetch()
+    .then(profile => {
+      console.log('profiles', profile);
+      if (!profile) {
+        throw profile;
+      }
+      res.status(200).send(profile);
+    })
+    // .error(err => {
+    //   res.status(500).send(err);
+    // })
+    .catch((err) => {
+      res.status(500).send(err);
+//      res.sendStatus(404);
+    });
+};
+
+module.exports.updateRating = (userId, rating) => {
+  models.User.where({id: userId}).fetch()
+  .then(fetchedModel => {
+    fetchedModel.save({
+      avg_rating: rating
+    })
+    .then(result => {
+      console.log('Successfully updated user average rating!');
+    });
+  })
+  .catch((err) => {
+    console.log('error updating booking.', err);
+  });   
+};
+
+
 // module.exports.update = (req, res) => {
 //   models.User.where({ id: req.params.id }).fetch()
 //     .then(profile => {

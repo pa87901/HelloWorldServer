@@ -175,3 +175,35 @@ module.exports.updateUserReviewRating = (req, res) => {
     res.sendStatus(404);
   });   
 };
+
+
+module.exports.getLast5MinutesOfReviews = (callback) => {
+  models.Booking.where('updated_at', '>', new Date(Date.now() - 300000000).toISOString()).fetchAll()
+  .then(fetchedModels => {
+    callback(fetchedModels);
+  })
+  .catch((err) => {
+    console.log('No reviews', err);
+  });
+};
+
+module.exports.getUserAverageRating = (userId, callback) => {
+  models.Booking.where('user_id', '=', userId).fetchAll()
+  .then((data)=>{
+    data = JSON.parse(JSON.stringify(data));
+    var average = data.reduce((acc, datum)=>{ return acc + datum.user_rating; }, 0)/data.length;
+    callback(average);
+  });
+};
+
+module.exports.getGuideAverageRating = (guideId, callback) => {
+  models.Booking.where('guide_id', '=', guideId).fetchAll()
+  .then((data)=>{
+    data = JSON.parse(JSON.stringify(data));
+    var average = data.reduce((acc, datum)=>{ return acc + datum.user_rating; }, 0)/data.length;
+    callback(average);
+  });
+};
+
+// module.exports.getUserAverageRating(1, (avg)=>{console.log('User average: ', avg)});
+// module.exports.getGuideAverageRating(1, (avg)=>{console.log('Guide average: ', avg)});
