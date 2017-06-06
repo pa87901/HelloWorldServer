@@ -69,7 +69,7 @@ module.exports.getUserBookings = (req, res) => {
   });   
 };
 
-module.exports.getGuideBookings = (req, res) => {
+module.exports.getAllGuideBookings = (req, res) => {
   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
   .then(result => {
     models.Guide.where({user_id: result.id}).fetchAll({
@@ -94,8 +94,39 @@ module.exports.getGuideBookings = (req, res) => {
   .error(err => {
     res.status(500).send(err);
   })
-  .catch(() => {
-    console.log('error retrieving booking.');
+  .catch(err => {
+    console.log('error retrieving booking.', err);
     res.sendStatus(404);
   });   
+};
+
+module.exports.getRequestedGuideBookings = (req, res) => {
+  models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
+  .then(result => {
+    models.Guide.where({user_id: result.id}).fetchAll({
+      withRelated: [
+        {
+          'bookings': function(qb) {
+            qb.where('status', 'requested');
+          }
+        },
+        {
+          'bookings.user': function(qb) {
+            qb.select();
+          }
+        }
+      ]  
+    })
+    .then(result2 => {
+      console.log('successfully retrieved booking information!');
+      res.status(200).send(result2); 
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(err => {
+    console.log('error retrieving booking.', err);
+    res.sendStatus(404);
+  });
 };
