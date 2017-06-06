@@ -20,4 +20,12 @@ router.route('/requested/guide/:facebookId')
   .get(BookingController.getRequestedGuideBookings)
   ;
 
+//Route for guide reviews rating and tips
+router.route('/guide/rrt/')
+  .put(BookingController.updateGuideReviewRatingTip);
+
+//Route for user reviews and ratings
+router.route('/user/rr/')
+  .put(BookingController.updateUserReviewRating);
+
 module.exports = router;

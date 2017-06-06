@@ -130,3 +130,48 @@ module.exports.getRequestedGuideBookings = (req, res) => {
     res.sendStatus(404);
   });
 };
+
+
+module.exports.updateGuideReviewRatingTip = (req, res) => {
+  models.Booking.where({id: req.body.bookingId}).fetch()
+  .then(fetchedModel => {
+    console.log(fetchedModel);
+    fetchedModel.save({
+      guide_review: req.body.guide_review,
+      guide_rating: req.body.guide_rating,
+      tips: req.body.tips
+    })
+    .then(result => {
+      res.status(200).send();
+      console.log('Successfully updated guide review ratings and tips!');
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error updating booking.');
+    res.sendStatus(404);
+  });   
+};
+
+module.exports.updateUserReviewRating = (req, res) => {
+  models.Booking.where({id: req.body.bookingId}).fetch()
+  .then(fetchedModel => {
+    fetchedModel.save({
+      user_review: req.body.user_review,
+      user_rating: req.body.user_rating
+    })
+    .then(result => {
+      res.status(200).send();
+      console.log('Successfully updated guide review ratings and tips!');
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch((err) => {
+    console.log('error updating booking.', err);
+    res.sendStatus(404);
+  });   
+};
