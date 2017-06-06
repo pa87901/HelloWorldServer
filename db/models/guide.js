@@ -18,7 +18,7 @@ const Guide = db.Model.extend({
     return this.hasMany('Availability', 'guide_id');
   },
   bookings: function() {
-    return this.hasMany('Booking');
+    return this.hasMany('Booking', 'guide_id');
   }
 
 });

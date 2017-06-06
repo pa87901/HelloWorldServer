@@ -1,15 +1,13 @@
 const models = require('../../db/models');
 
 module.exports.createBooking = (req, res) => {
-  console.log(req.body);
   models.User.where({facebook_id: req.body.travelerId}).fetch({columns: ['id']})
   .then(result => {
-    models.User.where({facebook_id: req.body.user.facebook_id}).fetch({columns: ['id']})
+    models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
-      console.log('result2', result2, req.body.user.facebook_id);
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
-        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_hr: '9', end_hr: '9', date: '5/5/2018'})
+        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_hr: req.body.startHr, end_hr: req.body.endHr, date: req.body.date})
         .save()
         .then(result => {
           console.log('success creating booking!!');
@@ -28,7 +26,6 @@ module.exports.createBooking = (req, res) => {
 };
 
 module.exports.updateBookingStatus = (req, res) => {
-  console.log('BODY', req.body.status);
   models.Booking.where({id: req.body.bookingId}).fetch()
   .then(fetchedModel => {
     fetchedModel.save({
@@ -46,4 +43,90 @@ module.exports.updateBookingStatus = (req, res) => {
     console.log('error updating booking.');
     res.sendStatus(404);
   });   
+};
+
+module.exports.getUserBookings = (req, res) => {
+  models.User.where({facebook_id: req.params.facebookId})
+  .fetchAll({
+    withRelated: [
+      {
+        'bookings': function(qb) {
+          qb.select();        
+        }
+      }
+    ]
+  })
+  .then(result => {
+    console.log('successfully retrieved booking information!');
+    res.status(200).send(result);
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error retrieving booking.');
+    res.sendStatus(404);
+  });   
+};
+
+module.exports.getAllGuideBookings = (req, res) => {
+  models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
+  .then(result => {
+    models.Guide.where({user_id: result.id}).fetchAll({
+      withRelated: [
+        {
+          'bookings': function(qb) {
+            qb.select();
+          }
+        },
+        {
+          'bookings.user': function(qb) {
+            qb.select();
+          }
+        }
+      ]
+    })
+    .then(result2 => {
+      console.log('successfully retrieved booking information!');
+      res.status(200).send(result2);
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(err => {
+    console.log('error retrieving booking.', err);
+    res.sendStatus(404);
+  });   
+};
+
+module.exports.getRequestedGuideBookings = (req, res) => {
+  models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
+  .then(result => {
+    models.Guide.where({user_id: result.id}).fetchAll({
+      withRelated: [
+        {
+          'bookings': function(qb) {
+            qb.where('status', 'requested');
+          }
+        },
+        {
+          'bookings.user': function(qb) {
+            qb.select();
+          }
+        }
+      ]  
+    })
+    .then(result2 => {
+      console.log('successfully retrieved booking information!');
+      res.status(200).send(result2); 
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(err => {
+    console.log('error retrieving booking.', err);
+    res.sendStatus(404);
+  });
 };
