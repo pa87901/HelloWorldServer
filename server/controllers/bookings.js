@@ -53,6 +53,16 @@ module.exports.getUserBookings = (req, res) => {
         'bookings': function(qb) {
           qb.select();        
         }
+      },
+      {
+        'bookings.user': function(qb) {
+          qb.select();
+        }
+      },
+      {
+        'bookings.guide.user': function(qb) {
+          qb.select();
+        }
       }
     ]
   })
