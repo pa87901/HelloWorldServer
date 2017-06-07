@@ -118,6 +118,7 @@ module.exports.getRequestedGuideBookings = (req, res) => {
         {
           'bookings': function(qb) {
             qb.where('status', 'requested');
+            qb.orderBy('date', 'desc');
           }
         },
         {
