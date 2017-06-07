@@ -201,8 +201,15 @@ module.exports.getLast5MinutesOfReviews = (callback) => {
 module.exports.getUserAverageRating = (userId, callback) => {
   models.Booking.where('user_id', '=', userId).fetchAll()
   .then((data)=>{
-    data = JSON.parse(JSON.stringify(data));
-    var average = data.reduce((acc, datum)=>{ return acc + datum.user_rating; }, 0)/data.length;
+    data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.user_rating !== null; });
+    var average = data.reduce((acc, datum)=>{ 
+      console.log(typeof datum.user_rating);
+      if(typeof datum.user_rating === 'string') {
+        return acc + Number(datum.user_rating); 
+      } else {
+        return acc;
+      }
+    }, 0)/data.length;
     callback(average);
   });
 };
@@ -210,8 +217,15 @@ module.exports.getUserAverageRating = (userId, callback) => {
 module.exports.getGuideAverageRating = (guideId, callback) => {
   models.Booking.where('guide_id', '=', guideId).fetchAll()
   .then((data)=>{
-    data = JSON.parse(JSON.stringify(data));
-    var average = data.reduce((acc, datum)=>{ return acc + datum.user_rating; }, 0)/data.length;
+    data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.user_rating !== null; });
+    var average = data.reduce((acc, datum)=>{ 
+      console.log(typeof datum.user_rating);
+      if(typeof datum.user_rating === 'string') {
+        return acc + Number(datum.user_rating); 
+      } else {
+        return acc;
+      }
+    }, 0)/data.length;
     callback(average);
   });
 };
