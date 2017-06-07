@@ -1,7 +1,6 @@
 const models = require('../../db/models');
 
 module.exports.createAvailability = (req, res) => {
-  console.log('create availaiblity', console.log(req.body))
   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
     models.Guide.where({user_id: result.id}).count()
