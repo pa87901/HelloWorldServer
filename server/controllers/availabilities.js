@@ -45,6 +45,26 @@ module.exports.createAvailability = (req, res) => {
 
 
 
+module.exports.getAvailability = (req, res) => {
+  models.Availability.where({id: req.params.id}).fetch()
+  .then(result => {
+    result = JSON.parse(JSON.stringify(result));
+    models.Guide.where({id: result.guide_id}).fetch()
+    .then(result2 => {
+      res.status(201).send({post: result, guide:result2});
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error creating availability.');
+    res.sendStatus(404);
+  });
+};   
+
+
+
 
 
 

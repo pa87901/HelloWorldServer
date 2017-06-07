@@ -7,4 +7,8 @@ router.route('/')
   .post(AvailabilityController.createAvailability)
   ;
 
+router.route('/:id')
+  .get(AvailabilityController.getAvailability)
+  ;
+
 module.exports = router;

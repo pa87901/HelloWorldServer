@@ -26,3 +26,5 @@ module.exports.updateRatings = () => {
     }
   });
 };
+
+// module.exports.updateRatings();
