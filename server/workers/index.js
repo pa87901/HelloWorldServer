@@ -1,1 +1,1 @@
-module.exports.updateRatings = require('./updateRatings');
+module.exports.updateRatings = require('./updateRatings').updateRatings;
