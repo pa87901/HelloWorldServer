@@ -5,7 +5,15 @@ const http = require('http').Server(app);
 module.exports.http = http;
 const db = require('../db');
 const PORT = process.env.port || 3000;
+const workers = require('./workers');
+var CronJob = require('cron').CronJob;
 
+var job = new CronJob({
+  cronTime: '5 * * * *',
+  onTick: workers.updateRatings,
+  start: true,
+  timeZone: 'America/Los_Angeles'
+});
 
 /////////////////////////////////////////////
 

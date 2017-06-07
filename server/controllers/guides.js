@@ -134,6 +134,21 @@ module.exports.getSearchResults = (req, res) => {
   });
 };
 
+module.exports.updateRating = (guideId, rating) => {
+  models.Guide.where({id: guideId}).fetch()
+  .then(fetchedModel => {
+    fetchedModel.save({
+      avg_rating: rating
+    })
+    .then(result => {
+      console.log('Successfully updated guide average rating!');
+    });
+  })
+  .catch((err) => {
+    console.log('error updating booking.', err);
+  });   
+};
+
 // user.where({
 //     id: 43
 //   }).fetchAll({

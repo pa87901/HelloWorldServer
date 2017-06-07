@@ -71,6 +71,10 @@ exports.up = function (knex, Promise) {
       table.timestamp('completed_at').nullable();
       table.decimal('base_fee').nullable();
       table.decimal('tips').nullable();
+      table.decimal('user_rating').nullable();
+      table.text('user_review').nullable();
+      table.decimal('guide_rating').nullable();
+      table.text('guide_review').nullable();
       table.timestamps(true, true);
     }),
   ]);
