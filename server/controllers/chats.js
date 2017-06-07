@@ -58,7 +58,7 @@ module.exports.getChat = (req, res, callback) => {
       res.status(500).send(err);
     })
     .catch(() => {
-      res.sendStatus(404);
+      res.status(404).send([]);
     });
 };
 
