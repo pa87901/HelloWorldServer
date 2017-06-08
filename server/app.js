@@ -29,10 +29,6 @@ app.use('/api/specialties', routes.specialties);
 app.use('/api/guidespecialties', routes.guideSpecialties);
 app.use('/api/availabilities', routes.availabilities);
 app.use('/api/bookings', routes.bookings);
-// app.post('api/users', (req, res) => {
-//   console.log('req.body in api/users post route', req.body);
-//   let user = {};
-//   res.sendStatus(200);
-// });
+app.use('/api/payments', routes.payments);
 
 module.exports = app;

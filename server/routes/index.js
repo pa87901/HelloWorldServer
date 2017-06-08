@@ -8,3 +8,4 @@ module.exports.specialties = require('./specialties');
 module.exports.guideSpecialties = require('./guideSpecialties');
 module.exports.availabilities = require('./availabilities');
 module.exports.bookings = require('./bookings');
+module.exports.payments = require('./payments');
