@@ -93,7 +93,7 @@ module.exports.getGuideByUserId = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  //console.log('guides get search results', req.params);
+  console.log('guides get search results', req.body);
   models.Guide.query((qb) => {
     qb.limit(25);
   })
