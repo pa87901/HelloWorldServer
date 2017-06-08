@@ -210,7 +210,7 @@ module.exports.getUserAverageRating = (userId, callback) => {
       }
     }, 0)/data.length;
     if(!average){ average = 0; }    
-    callback(average);
+    callback(average, data.length);
   });
 };
 
@@ -226,7 +226,7 @@ module.exports.getGuideAverageRating = (guideId, callback) => {
       }
     }, 0)/data.length;
     if(!average){ average = 0; }
-    callback(average);
+    callback(average, data.length);
   });
 };
 

@@ -55,7 +55,7 @@ module.exports.getOneGuide = (req, res) => {
 };
 
 module.exports.getGuideByChat = (req, res) => {
-  console.log('req.params in getGuideByChat method', req.params);
+  //console.log('req.params in getGuideByChat method', req.params);
   models.Guide.where({id: req.params.id})
   .fetch()
   .then(profile => {
@@ -73,7 +73,7 @@ module.exports.getGuideByChat = (req, res) => {
 };
 
 module.exports.getGuideByUserId = (req, res) => {
-  console.log('req.params in getGuideByUserId method', req.params);
+  //console.log('req.params in getGuideByUserId method', req.params);
   models.User.where({facebook_id: req.params.facebookId})
   .fetch()
   .then(profile => {
@@ -93,7 +93,7 @@ module.exports.getGuideByUserId = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  console.log('guides get search results', req.params);
+  //console.log('guides get search results', req.params);
   models.Guide.query((qb) => {
     qb.limit(25);
   })
@@ -107,7 +107,6 @@ module.exports.getSearchResults = (req, res) => {
       },
       {
         'availabilities': function(qb) {
-   
           qb.where('date', req.params.date).andWhere('city', req.params.city);
           // qb.where('date', '2017-11-11');
         }
@@ -116,13 +115,32 @@ module.exports.getSearchResults = (req, res) => {
         'guideSpecialties.specialty': function(qb) {
           qb.select();
         }
+      },
+      {
+        'bookings.user': function(qb){
+          qb.select();
+        }
       }
     ],
   })
   .then(profiles => {
+    profiles = JSON.parse(JSON.stringify(profiles));
     if (!profiles) {
       throw profiles;
     }
+    profiles.forEach((profile) => {
+      profile.bookings = profile.bookings.filter(booking=>!!booking.guide_review).map((booking)=>{
+        return {
+          userId: booking.user.user_id,
+          userFullName: booking.user.full_name,
+          userAvatar: booking.user.avatar,
+          userJoinDate: booking.user.created_at,
+          rating: booking.guide_rating, 
+          review: booking.guide_review
+        };
+      });
+      // console.log(profile.bookings)
+    });
     res.status(200).send(profiles);
   })
   .error(err => {
@@ -134,11 +152,12 @@ module.exports.getSearchResults = (req, res) => {
   });
 };
 
-module.exports.updateRating = (guideId, rating) => {
+module.exports.updateRating = (guideId, rating, count) => {
   models.Guide.where({id: guideId}).fetch()
   .then(fetchedModel => {
     fetchedModel.save({
-      avg_rating: rating
+      avg_rating: rating,
+      rating_count: count
     })
     .then(result => {
       console.log('Successfully updated guide average rating!');

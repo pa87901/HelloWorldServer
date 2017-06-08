@@ -13,18 +13,18 @@ module.exports.updateRatings = () => {
     });
     console.log(setOfUserIds, setOfGuideIds);
     for(let userId of setOfUserIds){
-      console.log(userId);
-      BookingController.getUserAverageRating(userId, (avg) => {
-        console.log('userid && avg', userId, avg);
-        UserController.updateRating(userId, avg);
+      // console.log(userId);
+      BookingController.getUserAverageRating(userId, (avg, count) => {
+        // console.log('userid && avg', userId, avg);
+        UserController.updateRating(userId, avg, count);
       });
     }
     for(let guideId of setOfGuideIds){
-      BookingController.getGuideAverageRating(guideId, (avg)=>{
-        GuideController.updateRating(guideId, avg);
+      BookingController.getGuideAverageRating(guideId, (avg, count)=>{
+        GuideController.updateRating(guideId, avg, count);
       });
     }
   });
 };
 
-// module.exports.updateRatings();
+module.exports.updateRatings();
