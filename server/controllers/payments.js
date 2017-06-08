@@ -12,7 +12,8 @@ module.exports.createCharge = (req, res) => {
   }, function(err, charge) {
     if (err) {
       console.log('There is an error processing the charge', err);
+    } else {
+      console.log('Successfully processed the charge', charge);
     }
-    console.log('Successfully processed the charge', charge);
   });
 };
