@@ -86,11 +86,12 @@ module.exports.getUserById = (req, res) => {
     });
 };
 
-module.exports.updateRating = (userId, rating) => {
+module.exports.updateRating = (userId, rating, count) => {
   models.User.where({id: userId}).fetch()
   .then(fetchedModel => {
     fetchedModel.save({
-      avg_rating: rating
+      avg_rating: rating,
+      rating_count: count
     })
     .then(result => {
       console.log('Successfully updated user average rating!');

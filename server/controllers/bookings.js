@@ -144,9 +144,9 @@ module.exports.getRequestedGuideBookings = (req, res) => {
 
 
 module.exports.updateGuideReviewRatingTip = (req, res) => {
+  console.log(req.body);
   models.Booking.where({id: req.body.bookingId}).fetch()
   .then(fetchedModel => {
-    console.log(fetchedModel);
     fetchedModel.save({
       guide_review: req.body.guide_review,
       guide_rating: req.body.guide_rating,
@@ -203,32 +203,32 @@ module.exports.getUserAverageRating = (userId, callback) => {
   .then((data)=>{
     data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.user_rating !== null; });
     var average = data.reduce((acc, datum)=>{ 
-      console.log(typeof datum.user_rating);
       if(typeof datum.user_rating === 'string') {
         return acc + Number(datum.user_rating); 
       } else {
         return acc;
       }
     }, 0)/data.length;
-    callback(average);
+    if(!average){ average = 0; }    
+    callback(average, data.length);
   });
 };
 
 module.exports.getGuideAverageRating = (guideId, callback) => {
   models.Booking.where('guide_id', '=', guideId).fetchAll()
   .then((data)=>{
-    data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.user_rating !== null; });
-    var average = data.reduce((acc, datum)=>{ 
-      console.log(typeof datum.user_rating);
-      if(typeof datum.user_rating === 'string') {
-        return acc + Number(datum.user_rating); 
+    data = JSON.parse(JSON.stringify(data)).filter(datum => {return datum.guide_rating !== null; });
+    var average = data.reduce((acc, datum, i)=>{ 
+      if(typeof datum.guide_rating !== 'object') {
+        return acc + Number(datum.guide_rating); 
       } else {
         return acc;
       }
     }, 0)/data.length;
-    callback(average);
+    if(!average){ average = 0; }
+    callback(average, data.length);
   });
 };
 
-// module.exports.getUserAverageRating(1, (avg)=>{console.log('User average: ', avg)});
-// module.exports.getGuideAverageRating(1, (avg)=>{console.log('Guide average: ', avg)});
+//module.exports.getUserAverageRating(1, (avg)=>{console.log('User average: ', typeof avg)});
+// module.exports.getGuideAverageRating(1, (avg)=>{console.log('Guide average: ',  avg)});

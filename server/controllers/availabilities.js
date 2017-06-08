@@ -45,6 +45,37 @@ module.exports.createAvailability = (req, res) => {
 
 
 
+module.exports.getAvailability = (req, res) => {
+  models.Availability.where({id: req.params.id}).fetch()
+  .then(result => {
+    result = JSON.parse(JSON.stringify(result));
+    models.Guide.where({id: result.guide_id}).fetch()
+    .then(result2 => {
+      result2 = JSON.parse(JSON.stringify(result2));
+      models.Booking.where({guide_id: result.guide_id}).fetchAll(
+
+      )
+      .then(result3 =>{
+        result3 = JSON.parse(JSON.stringify(result3));
+        result3 = result3.filter(booking=>!!booking.guide_review).map(booking => {
+          return {
+            userId: booking.user_id,
+            rating: booking.guide_rating, 
+            review: booking.guide_review
+          };
+        });
+      });
+      //res.status(201).send({post: result, guide:result2});
+    });
+  })
+  .error(err => {
+    res.status(500).send(err);
+  })
+  .catch(() => {
+    console.log('error creating availability.');
+    res.sendStatus(404);
+  });
+};   
 
 
 

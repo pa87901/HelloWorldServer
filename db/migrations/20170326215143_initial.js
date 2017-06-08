@@ -9,12 +9,14 @@ exports.up = function (knex, Promise) {
       table.string('avatar', 255).nullable();
       table.string('picture', 255).nullable();
       table.decimal('avg_rating').defaultTo(0);
+      table.integer('rating_count').defaultTo(0);
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('guides', function(table) {
       table.increments('id').unsigned().primary();
       table.integer('user_id').references('users.id').onDelete('CASCADE');
       table.decimal('avg_rating').defaultTo(0);
+      table.integer('rating_count').defaultTo(0);
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('ratings', function(table) {
