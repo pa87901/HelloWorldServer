@@ -145,15 +145,37 @@ module.exports.getSearchResults = (req, res) => {
     });
 
     // Iterate through critera send down for only keys with true value:
-    let trueCriteria = [];
-    for (let key in req.headers) {
-      if (req.headers[key] === 'true') {
-        trueCriteria.push(key);
-      }
-    }
-    console.log(req.headers, 'trueCriteria', trueCriteria);
+    // let trueCriteria = [];
+    // for (let key in req.headers) {
+    //   if (req.headers[key] === 'true') {
+    //     trueCriteria.push(key);
+    //   }
+    // }
+    // console.log('trueCriteria', trueCriteria);
+
+    // let selectedGuides = [];
+    // // Find guides that have this specialty.
+    // trueCriteria.forEach(specialty => {
+    //   models.Specialty.where({'specialty': specialty}).fetchAll({
+    //     withRelated: [
+    //       {
+    //         'guideSpecialties.guide.user': (qb) => {
+    //           qb.select();
+    //         }
+    //       },
+    //     ]
+    //   })
+    //   .then(guideSpecialties => {
+    //     console.log('guideSpecialty with guide info', guideSpecialties);
+    //     // selectGuides.push(guideSpecialties);
+    //     // res.status(200).send(guideSpecialties);
+    //   })
+      
+    // })
+
     // Iterate through each profile's specialties array.
     
+      // If their specialties include that in trueCriteria [], push to selected guides
 
 
 

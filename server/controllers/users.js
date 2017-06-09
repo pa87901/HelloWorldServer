@@ -52,7 +52,7 @@ module.exports.getUserById = (req, res) => {
   req.params.id = Number(req.params.id);
   models.User.where({ id: req.params.id}).fetch()
     .then(profile => {
-      console.log('profiles', profile);
+      // console.log('profiles', profile);
       if (!profile) {
         throw profile;
       }
@@ -71,7 +71,7 @@ module.exports.getUserById = (req, res) => {
   req.params.id = Number(req.params.id);
   models.User.where({ id: req.params.id}).fetch()
     .then(profile => {
-      console.log('profiles', profile);
+      // console.log('profiles', profile);
       if (!profile) {
         throw profile;
       }
