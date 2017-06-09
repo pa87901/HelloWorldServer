@@ -2,8 +2,8 @@ const models = require('../../db/models');
 
 module.exports.createAvailability = (req, res) => {
   const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-  const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString().slice(0, -1);
-  const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString().slice(0, -1);
+  const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString();
+  const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString();
 
   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
