@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
         facebookId: message.user._id,
         guideFacebookId: message.user.guideId,
         message: message.text,
-        author: message.user.guide === true ? 'guide' : ''
+        author: message.user.author
       };
       console.log('received message', message, 'formatted message', dbFormattedMessage);
 
