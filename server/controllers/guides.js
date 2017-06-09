@@ -107,8 +107,7 @@ module.exports.getSearchResults = (req, res) => {
       },
       {
         'availabilities': function(qb) {
-          qb.where('date', req.params.date).andWhere('city', req.params.city);
-          // qb.where('date', '2017-11-11');
+          qb.where(new Date('start_date_hr'), '<', new Date(req.params.date)).andWhere('city', req.params.city);
         }
       },
       {
@@ -117,7 +116,7 @@ module.exports.getSearchResults = (req, res) => {
         }
       },
       {
-        'bookings.user': function(qb){
+        'bookings.user': function(qb) {
           qb.select();
         }
       }
