@@ -93,7 +93,7 @@ module.exports.getGuideByUserId = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  console.log('guides get search results', req.body);
+  console.log('guides get search results', req.headers);
   models.Guide.query((qb) => {
     qb.limit(25);
   })
@@ -141,6 +141,23 @@ module.exports.getSearchResults = (req, res) => {
       });
       // console.log(profile.bookings)
     });
+    // console.log('PROFILES FROM GUIDE CONTROLLERS: ', profiles);
+
+    // Iterate through critera send down for only keys with true value:
+    let trueCriteria = [];
+    for (let key in req.headers) {
+      if (req.headers[key] === 'true') {
+        trueCriteria.push(key);
+      }
+    }
+    console.log(req.headers, 'trueCriteria', trueCriteria);
+    // Iterate through each profile's specialties array.
+    
+
+
+
+
+
     res.status(200).send(profiles);
   })
   .error(err => {
