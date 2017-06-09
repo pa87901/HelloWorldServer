@@ -4,6 +4,7 @@ config/production.json
 config/staging.json
 config/test.json
 config/default.json
+config/stripeSecret.js
 
 
 # OS X
