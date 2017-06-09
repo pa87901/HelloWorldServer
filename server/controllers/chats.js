@@ -39,7 +39,20 @@ module.exports.getChat = (req, res, callback) => {
           qb.limit(100); 
           qb.orderBy('created_at', 'desc');
         })
-          .where({user_id: result.id, guide_id: result3.id}).fetchAll()
+          .where({user_id: result.id, guide_id: result3.id}).fetchAll({
+            withRelated: [
+              {
+                'user': (qb) => {
+                  qb.select();
+                }
+              },
+              {
+                'guide.user': (qb) => {
+                  qb.select();
+                }
+              }
+            ]
+          })
           .then(chats => {
             if (!chats) {
               throw chats;
