@@ -53,9 +53,8 @@ exports.up = function (knex, Promise) {
       table.decimal('hourly_rate').notNullable();
       table.text('intro').nullable();
       table.text('statement').nullable();
-      table.integer('start_hr').notNullable();
-      table.integer('end_hr').notNullable();
-      table.date('date').notNullable();
+      table.dateTime('start_date_hr').notNullable();
+      table.dateTime('end_date_hr').notNullable();
       table.timestamps(true, true);
     }),
     knex.schema.createTableIfNotExists('bookings', function(table) {
@@ -63,9 +62,8 @@ exports.up = function (knex, Promise) {
       table.integer('user_id').references('users.id').onDelete('CASCADE');
       table.integer('guide_id').references('guides.id').onDelete('CASCADE');
       table.string('city', 100).notNullable();
-      table.integer('start_hr').notNullable();
-      table.integer('end_hr').notNullable();
-      table.date('date').notNullable();
+      table.dateTime('start_date_hr').notNullable();
+      table.dateTime('end_date_hr').notNullable();
       table.string('status', 20).defaultTo('requested');
       table.string('cancelled_by', 20).nullable();
       table.timestamp('cancelled_at').nullable();

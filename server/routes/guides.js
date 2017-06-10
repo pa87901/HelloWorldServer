@@ -22,7 +22,7 @@ router.route('/byUserId/:facebookId')
   .get(GuideController.getGuideByUserId)
   ;
 
-router.route('/search/:city/:date')
+router.route('/search/:city/:date/:fromHour/:toHour')
   .get(GuideController.getSearchResults)
   ;
 

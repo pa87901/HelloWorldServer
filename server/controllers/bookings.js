@@ -1,13 +1,17 @@
 const models = require('../../db/models');
 
 module.exports.createBooking = (req, res) => {
+  const tzoffset = 0;
+  const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString();
+  const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString();
+
   models.User.where({facebook_id: req.body.travelerId}).fetch({columns: ['id']})
   .then(result => {
     models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       .then(result3 => {
-        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_hr: req.body.startHr, end_hr: req.body.endHr, date: req.body.date})
+        models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_date_hr: startDateHr, end_date_hr: endDateHr})
         .save()
         .then(result => {
           console.log('success creating booking!!');
@@ -118,7 +122,7 @@ module.exports.getRequestedGuideBookings = (req, res) => {
         {
           'bookings': function(qb) {
             qb.where('status', 'requested');
-            qb.orderBy('date', 'desc');
+            qb.orderBy('start_date_hr', 'desc');
           }
         },
         {
@@ -203,13 +207,13 @@ module.exports.getUserAverageRating = (userId, callback) => {
   .then((data)=>{
     data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.user_rating !== null; });
     var average = data.reduce((acc, datum)=>{ 
-      if(typeof datum.user_rating === 'string') {
+      if (typeof datum.user_rating === 'string') {
         return acc + Number(datum.user_rating); 
       } else {
         return acc;
       }
-    }, 0)/data.length;
-    if(!average){ average = 0; }    
+    }, 0) / data.length;
+    if (!average) { average = 0; }    
     callback(average, data.length);
   });
 };
@@ -217,18 +221,15 @@ module.exports.getUserAverageRating = (userId, callback) => {
 module.exports.getGuideAverageRating = (guideId, callback) => {
   models.Booking.where('guide_id', '=', guideId).fetchAll()
   .then((data)=>{
-    data = JSON.parse(JSON.stringify(data)).filter(datum => {return datum.guide_rating !== null; });
+    data = JSON.parse(JSON.stringify(data)).filter(datum => { return datum.guide_rating !== null; });
     var average = data.reduce((acc, datum, i)=>{ 
-      if(typeof datum.guide_rating !== 'object') {
+      if (typeof datum.guide_rating !== 'object') {
         return acc + Number(datum.guide_rating); 
       } else {
         return acc;
       }
-    }, 0)/data.length;
-    if(!average){ average = 0; }
+    }, 0) / data.length;
+    if (!average) { average = 0; }
     callback(average, data.length);
   });
 };
-
-//module.exports.getUserAverageRating(1, (avg)=>{console.log('User average: ', typeof avg)});
-// module.exports.getGuideAverageRating(1, (avg)=>{console.log('Guide average: ',  avg)});

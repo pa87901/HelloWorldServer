@@ -22,12 +22,12 @@ module.exports.createUser = (req, res) => {
   })
     .save()
     .then(result => {
-      if(result){
+      if (result) {
         res.status(201).send('success creating user!!');
       }
     })
     .catch((err) => {
-      if(err){
+      if (err) {
         res.status(500).send(err);
       }
     });
@@ -42,7 +42,7 @@ module.exports.getUser = (req, res) => {
       res.status(200).send(profile);
     })
     .catch((err) => {
-      if(err){
+      if (err) {
         res.send(500).send(err);
       }
     });
@@ -101,42 +101,3 @@ module.exports.updateRating = (userId, rating, count) => {
     console.log('error updating booking.', err);
   });   
 };
-
-
-// module.exports.update = (req, res) => {
-//   models.User.where({ id: req.params.id }).fetch()
-//     .then(profile => {
-//       if (!profile) {
-//         throw profile;
-//       }
-//       return profile.save(req.body, { method: 'update' });
-//     })
-//     .then(() => {
-//       res.sendStatus(201);
-//     })
-//     .error(err => {
-//       res.status(500).send(err);
-//     })
-//     .catch(() => {
-//       res.sendStatus(404);
-//     });
-// };
-
-// module.exports.deleteOne = (req, res) => {
-//   models.User.where({ id: req.params.id }).fetch()
-//     .then(profile => {
-//       if (!profile) {
-//         throw profile;
-//       }
-//       return profile.destroy();
-//     })
-//     .then(() => {
-//       res.sendStatus(200);
-//     })
-//     .error(err => {
-//       res.status(503).send(err);
-//     })
-//     .catch(() => {
-//       res.sendStatus(404);
-//     });
-// };
