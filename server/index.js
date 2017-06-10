@@ -62,11 +62,17 @@ io.on('connection', (socket) => {
     };
     chatsController.getChat(req2, null, (data2) => {
       // Combine the chats.
+      if (!data.models.length) {
+        data = {models: []};
+      }
+      if (!data2.models.length) {
+        data2 = {models: []};
+      }
       data = data.models.concat(data2.models);
       // data.sort((a, b) => {
       //   return a.
       // })
-      // console.log('DATA', data, data.length);
+      console.log('DATA', data, data.length);
       io.emit('chat message', JSON.parse(JSON.stringify(data)));
     });
   });
