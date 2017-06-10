@@ -54,7 +54,21 @@ io.on('connection', (socket) => {
     }
   };
   chatsController.getChat(req, null, (data) => {
-    io.emit('chat message', JSON.parse(JSON.stringify(data)));
+    let req2 = {
+      params: {
+        facebookId: socket.handshake.query.guideId,
+        guideFacebookId: socket.handshake.query.userId,
+      }
+    };
+    chatsController.getChat(req2, null, (data2) => {
+      // Combine the chats.
+      data = data.models.concat(data2.models);
+      // data.sort((a, b) => {
+      //   return a.
+      // })
+      // console.log('DATA', data, data.length);
+      io.emit('chat message', JSON.parse(JSON.stringify(data)));
+    });
   });
 
 
