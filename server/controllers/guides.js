@@ -93,11 +93,9 @@ module.exports.getGuideByUserId = (req, res) => {
 };
 
 module.exports.getSearchResults = (req, res) => {
-  console.log('guides get search results', req.headers);
   models.Guide.query((qb) => {
     qb.limit(25);
   })
-  //.where({})
   .fetchAll({
     withRelated: [
       {
@@ -107,7 +105,7 @@ module.exports.getSearchResults = (req, res) => {
       },
       {
         'availabilities': function(qb) {
-          qb.where(new Date('start_date_hr'), '<', new Date(req.params.date)).andWhere('city', req.params.city);
+          qb.where('city', req.params.city);
         }
       },
       {
@@ -128,6 +126,8 @@ module.exports.getSearchResults = (req, res) => {
       throw profiles;
     }
     profiles.forEach((profile) => {
+      const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+
       profile.bookings = profile.bookings.filter(booking=>!!booking.guide_review).map((booking)=>{
         return {
           userId: booking.user.user_id,
@@ -138,9 +138,11 @@ module.exports.getSearchResults = (req, res) => {
           review: booking.guide_review
         };
       });
-      // console.log(profile.bookings)
+      
+      profile.availabilities = profile.availabilities.filter(post => {
+        return new Date(`${req.params.date}, ${req.params.toHour}:00`) <= new Date(post.end_date_hr) && new Date(`${req.params.date}, ${req.params.fromHour}:00`) >= new Date(post.start_date_hr);
+      });
     });
-    // console.log('PROFILES FROM GUIDE CONTROLLERS: ', profiles);
 
     // Iterate through critera send down for only keys with true value:
     let trueCriteria = [];
