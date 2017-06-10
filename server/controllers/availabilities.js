@@ -1,9 +1,7 @@
 const models = require('../../db/models');
 
 module.exports.createAvailability = (req, res) => {
-  // const tzoffset = (new Date()).getTimezoneOffset() * 60000;
   const tzoffset = 0;
-
 
   const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString();
   const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString();
