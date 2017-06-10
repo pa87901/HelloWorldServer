@@ -8,7 +8,7 @@ const Booking = db.Model.extend({
   guide: function() {
     return this.belongsTo('Guide');
   },
-  itinerary: function() {
+  events: function() {
     return this.hasMany('Event', 'booking_id');
   }
 

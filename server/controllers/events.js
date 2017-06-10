@@ -1,27 +1,41 @@
 const models = require('../../db/models');
 
 module.exports.createEvents = (req, res) => {
-  module.Event.forge({
-    booking_id: req.body.booking_id,
-    type: req.body.type,
-    establishment_type: req.body.establishment_type,
-    event_name: req.body.event_name,
-    longitude: req.body.longitude,
-    latitude: req.body.latitude,
-    time_spent: req.body.time_spent,
-    travel_time: req.body.travel_time,
-    google_place_id: req.body.google_place_id,
-    google_maps_url: req.body.google_maps.url
-  }).save()
-  ;
+  var options = {};
+  console.log(req.body.events.eventsType);
+  options['availability_id'] = '1';
+  options['booking_id'] = '1';
+  models.Event.where(options).destroy()
+    .then((result)=> {
+      models.Event.forge(req.body.events.list).save();
+    });
 };
 
-deleteEvents = (req, res) => {
-  // takes booking id
-  // creates
+
+req = {};
+req.body = {};
+req.body.events = {
+  eventsType: 'availability',
+  eventId: '1',
+  list: {
+    booking_id: '1',
+    availability_id: '1',
+    type: 'availability',
+    establishment_type: 'point_of_interest',
+    event_name: 'Legion of Honor, San Francisco, CA, United States',
+    longitude: '37.7863901802915',
+    latitude: '-122.4980650197085',
+    time_spent: '45',
+    travel_time: '7',
+    google_place_id: 'ChIJmUsJz6yHhYARS9zv8DkGiEQ',
+    google_maps_url: 'https://maps.google.com/?cid=4938203837336902731'
+  }
 };
 
-module.exports.getAvailabilitesEvents= (req, res) =>{
+//module.exports.createEvents(req, null);
+
+
+module.exports.getAvailabilitesEvents = (req, res) =>{
 
 };
 
@@ -66,4 +80,19 @@ module.exports.getAvailabilitesEvents= (req, res) =>{
 //     console.log('error creating availability.');
 //     res.sendStatus(404);
 //   });
+
+
+
+      // {
+      //   booking_id: req.body.eventListId,
+      //   type: req.body.type,
+      //   establishment_type: req.body.establishment_type,
+      //   event_name: req.body.event_name,
+      //   longitude: req.body.longitude,
+      //   latitude: req.body.latitude,
+      //   time_spent: req.body.time_spent,
+      //   travel_time: req.body.travel_time,
+      //   google_place_id: req.body.google_place_id,
+      //   google_maps_url: req.body.google_maps.url
+      // }
 // };   

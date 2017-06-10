@@ -79,10 +79,10 @@ exports.up = function (knex, Promise) {
     }),
     knex.schema.createTableIfNotExists('events', function(table) {
       table.increments('id').unsigned().primary();
-      table.integer('availabilities_id').references('availabilities.id').onDelete('CASCADE');
-      table.integer('bookings_id').references('bookings.id').onDelete('CASCADE');
+      table.integer('availability_id').references('availabilities.id').onDelete('CASCADE');
+      table.integer('booking_id').references('bookings.id').onDelete('CASCADE');
       table.string('type').notNullable();
-      table.string('establishment_type').notNullable();
+      table.string('establishment_type').nullable();
       table.string('event_name').notNullable();
       table.decimal('longitude').notNullable();
       table.decimal('latitude').notNullable();

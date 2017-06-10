@@ -5,8 +5,8 @@ const Availability = db.Model.extend({
   guide: function() {
     return this.belongsTo('Guide', 'guide_id');
   },
-  itinerary: function() {
-    return this.hasOne('Event', 'availability_id');
+  events: function() {
+    return this.hasMany('Event', 'availability_id');
   }
 });
 
