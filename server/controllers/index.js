@@ -7,3 +7,4 @@ module.exports.GuideSpecialty = require('./guideSpecialties');
 module.exports.Availabilities = require('./availabilities');
 module.exports.Bookings = require('./bookings');
 module.exports.Payments = require('./payments');
+module.exports.Events = require('./events');

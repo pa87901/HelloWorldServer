@@ -77,6 +77,21 @@ exports.up = function (knex, Promise) {
       table.text('guide_review').nullable();
       table.timestamps(true, true);
     }),
+    knex.schema.createTableIfNotExists('events', function(table) {
+      table.increments('id').unsigned().primary();
+      table.integer('availability_id').references('availabilities.id').onDelete('CASCADE');
+      table.integer('booking_id').references('bookings.id').onDelete('CASCADE');
+      table.string('type').notNullable();
+      table.string('establishment_type').nullable();
+      table.string('event_name').notNullable();
+      table.decimal('longitude').notNullable();
+      table.decimal('latitude').notNullable();
+      table.integer('time_spent').nullable();
+      table.integer('travel_time').nullable();
+      table.string('google_place_id').nullable();
+      table.string('google_maps_url').nullable();
+      table.timestamps(true, true);
+    }),   
   ]);
 };
 
@@ -89,7 +104,8 @@ exports.down = function (knex, Promise) {
     knex.schema.dropTable('guide_specialty'),
     knex.schema.dropTable('chats'),
     knex.schema.dropTable('availabilities'),
-    knex.schema.dropTable('bookings')
+    knex.schema.dropTable('bookings'),
+    knex.schema.dropTable('events')
   ]);
 };
 
