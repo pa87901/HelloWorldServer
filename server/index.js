@@ -3,8 +3,10 @@ const app = require('./app');
 // Set up an http server for socket.io purposes.
 const http = require('http').Server(app);
 module.exports.http = http;
+const url = require('url');
 const db = require('../db');
-const PORT = process.env.port || 3000;
+const proxy = url.parse(process.env.PROXIMO_URL);
+const PORT = proxy.port || 3000;
 const workers = require('./workers');
 var CronJob = require('cron').CronJob;
 
