@@ -5,8 +5,10 @@ const http = require('http').Server(app);
 module.exports.http = http;
 const url = require('url');
 const db = require('../db');
-const proxy = url.parse(process.env.PROXIMO_URL);
-const PORT = proxy.port || 80;
+const fixieUrl = url.parse(process.env.FIXIE_URL);
+const PORT = fixieUrl.port;
+// const proxy = url.parse(process.env.PROXIMO_URL);
+// const PORT = proxy.port || 80;
 const workers = require('./workers');
 var CronJob = require('cron').CronJob;
 
@@ -115,6 +117,5 @@ io.on('connection', (socket) => {
 
 http.listen(PORT, () => {
   console.log('Example app listening on port: ' + PORT);
-  console.log('THIS IS PROXIMO URL', process.env.PROXIMO_URL);
-  console.log('THIS IS parsed URL', proxy);
+  console.log('THIS IS FIXIE URL', process.env.FIXIE_URL);
 });
