@@ -2,7 +2,7 @@ const session = require('express-session');
 //const RedisStore = require('connect-redis')(session);
 //const redisClient = require('redis').createClient();
 const JWT = require('jwt-async');
-const secret = require('../../config/secrets.js').AUTH0_SECRET;
+const secret = process.env.AUTH0_SECRET || require('../../config/secrets.js').AUTH0_SECRET;
 
 var jwt = new JWT();
 jwt.setSecret(secret);
