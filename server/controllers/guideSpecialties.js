@@ -1,6 +1,10 @@
 const models = require('../../db/models');
 
+
+
+
 module.exports.createGuideSpecialty = (req, res) => {
+  console.log(req.body.specialty, req.body.guideFacebookId);
   models.Specialty.where({specialty: req.body.specialty}).fetch({columns: ['id']})
     .then(result => {
       if (!result.id) {

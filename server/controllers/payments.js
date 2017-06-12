@@ -1,4 +1,4 @@
-const STRIPE_API_KEY = require('../../config/stripeSecret').STRIPE_API_KEY;
+const STRIPE_API_KEY = require('../../config/secrets').STRIPE_API_KEY;
 const stripe = require('stripe')(STRIPE_API_KEY);
 
 module.exports.createCharge = (req, res) => {
