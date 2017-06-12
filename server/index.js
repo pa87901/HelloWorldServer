@@ -115,4 +115,6 @@ io.on('connection', (socket) => {
 
 http.listen(PORT, () => {
   console.log('Example app listening on port: ' + PORT);
+  console.log('THIS IS PROXIMO URL', process.env.PROXIMO_URL);
+  console.log('THIS IS parsed URL', proxy);
 });
