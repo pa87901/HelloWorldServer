@@ -30,5 +30,6 @@ app.use('/api/guidespecialties', routes.guideSpecialties);
 app.use('/api/availabilities', routes.availabilities);
 app.use('/api/bookings', routes.bookings);
 app.use('/api/payments', routes.payments);
+app.use('/api/events', routes.events);
 
 module.exports = app;
