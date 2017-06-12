@@ -1,6 +1,5 @@
 const models = require('../../db/models');
 const redis = require('redis');
-const config = require('../../config/secrets.js');
 
 let client = redis.createClient();
 client.on('connect', () => {
