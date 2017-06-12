@@ -4,7 +4,7 @@ config/production.json
 config/staging.json
 config/test.json
 config/default.json
-config/stripeSecret.js
+config/secrets.js
 
 
 # OS X
@@ -38,9 +38,6 @@ dist/
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
-
-#Secrets
-config/authSecret.js
 
 # config
 # In order to populate database, need to configure the default.json file to set up the connection.

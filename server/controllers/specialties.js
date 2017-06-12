@@ -1,6 +1,16 @@
 const models = require('../../db/models');
+const redis = require('redis');
+const config = require('../../config/secrets.js');
+
+let client = redis.createClient();
+client.on('connect', () => {
+  console.log('redis connected');
+});
+
 
 module.exports.updateSpecialties = (req, res) => {
+  console.log(req.body.specialty, req.body);
+  client.sadd(req.body.specialty, [req.body.facebookId]);
   models.Specialty.where({specialty: req.body.specialty}).fetch({columns: ['id']})
   .then(result => {
     if (!result) {
@@ -113,6 +123,8 @@ module.exports.getSpecialties = (req, res) => {
 };
 
 module.exports.deleteSpecialties = (req, res) => {
+  console.log('srem', req.params);
+  client.srem(req.params.specialty, 'facebook|' + req.params.facebookId);
   models.Specialty.where({specialty: req.params.specialty}).fetch({columns: ['id']})
   .then(result => {
     if (!result) {
