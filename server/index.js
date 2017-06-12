@@ -6,7 +6,7 @@ module.exports.http = http;
 const url = require('url');
 const db = require('../db');
 const proxy = url.parse(process.env.PROXIMO_URL);
-const PORT = proxy.port || 3000;
+const PORT = proxy.port;
 const workers = require('./workers');
 var CronJob = require('cron').CronJob;
 
