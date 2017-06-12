@@ -1,7 +1,6 @@
 const models = require('../../db/models');
 const Promise = require('bluebird');
 const redis =  require('redis');
-const config = require('../../config/secrets.js');
 Promise.promisifyAll(redis.RedisClient.prototype);
 
 let client = redis.createClient();
