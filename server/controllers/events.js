@@ -3,6 +3,7 @@ const models = require('../../db/models');
 module.exports.createEvents = (req, res) => {
   var options = {};
   console.log(req.body.events.eventsType);
+  // options [eventsType +'_id'] = eventId
   options['availability_id'] = '1';
   options['booking_id'] = '1';
   models.Event.where(options).destroy()
@@ -32,67 +33,51 @@ req.body.events = {
   }
 };
 
-//module.exports.createEvents(req, null);
-
-
 module.exports.getAvailabilitesEvents = (req, res) =>{
 
 };
 
-// module.exports.createAvailability = (req, res) => {
-//   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
-//   .then(result => {
-//     models.Guide.where({user_id: result.id}).count()
-//     .then(result2 => {
-//       if (result2 === '0') {
-//         models.Guide.forge({user_id: result.id})
-//         .save()
-//         .then(result3 => {
-//           console.log('Successfully created a guide!');
-//           models.Guide.where({user_id: result.id}).fetch({columns: ['id']})
-//           .then(result4 => {
-//             models.Availability.forge({guide_id: result4.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement, start_hr: req.body.startHr, end_hr: req.body.endHr, date: req.body.date})
-//             .save()
-//             .then(result5 => {
-//               console.log('Successfully created availability!');
-//               res.status(200).send();
-//             });
-//           });
-//         });
-//       } else {
-//         models.Guide.where({user_id: result.id}).fetch({columns: ['id']})
-//         .then(result6 => {
-//             console.log(req.body)
-//           models.Availability.forge({guide_id: result6.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement, start_hr: req.body.startHr, end_hr: req.body.endHr, date: req.body.date})
-//           .save()
-//           .then(result5 => {
-//             console.log('Successfully created availability!');
-//             res.status(200).send();
-//           });
-//         });
-//       }
-//     });
-//   })
-//   .error(err => {
-//     res.status(500).send(err);
-//   })
-//   .catch(() => {
-//     console.log('error creating availability.');
-//     res.sendStatus(404);
-//   });
+module.exports.createEvent = (req, res) => {
+  // models.Event.where({booking_id: req.params.bookingId}).fetch({colums: ['availability_id']})
+  // .then()
+  
+};
 
+module.exports.getEventsPerBooking = (req, res) => {
+  models.Event.where({booking_id: req.params.bookingId}).fetchAll({
+    withRelated: [
+      {
+        'booking': qb => {
+          qb.select();
+        }
+      },
+      {
+        'booking.user': qb => {
+          qb.select();
+        }
+      },
+      {
+        'booking.guide.user': qb => {
+          qb.select();
+        }
+      }
+    ]
+  })
+  .then(result => {
+    res.status(200).send(result);
+  })
+  .catch(error => {
+    res.status(404).send(error);
+  });
+};
 
-
-      // {
-      //   booking_id: req.body.eventListId,
-      //   type: req.body.type,
-      //   establishment_type: req.body.establishment_type,
-      //   event_name: req.body.event_name,
-      //   longitude: req.body.longitude,
-      //   latitude: req.body.latitude,
-      //   time_spent: req.body.time_spent,
-      //   travel_time: req.body.travel_time,
-      //   google_place_id: req.body.google_place_id,
-      //   google_maps_url: req.body.google_maps.url
-      // }
-// };   
+module.exports.removeEventForABooking = (req, res) => {
+  models.Event.where({booking_id: req.params.bookingId, event_name: req.params.eventName}).destroy({require: true})
+  .then(response => {
+    console.log('removeEventResponse', response);
+    res.status(200).send();
+  })
+  .catch(error => {
+    res.status(404).send(error);
+  });
+};
