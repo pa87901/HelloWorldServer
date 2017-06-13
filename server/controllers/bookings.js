@@ -15,11 +15,11 @@ module.exports.createBooking = (req, res) => {
         models.Booking.forge({user_id: result.id, guide_id: result3.id, city: req.body.city, start_date_hr: startDateHr, end_date_hr: endDateHr})
         .save()
         .then(result => {
-          console.log('success creating booking!!');
-          models.Booking.where({user_id: result2.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
+          console.log('success creating booking!!', result.id);
+          models.Booking.where({user_id: result.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
           .then(lastBookingId => {
-            // console.log('lastBookingId', lastBookingId.id);
-            events.updateBookingIdOfEvent(lastBookingId.id, req.body.availabilityId);
+            console.log('---lastBookingId---', lastBookingId);
+            // events.updateBookingIdOfEvent(lastBookingId.id, req.body.availabilityId);
             res.status(200).send();
           });
         });
