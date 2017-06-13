@@ -20,8 +20,11 @@ module.exports.createAvailability = (req, res) => {
             models.Availability.forge({guide_id: result4.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement, start_date_hr: startDateHr, end_date_hr: endDateHr})
             .save()
             .then(result5 => {
-              console.log('Successfully created availability!', result5);
-              res.status(200).send();
+              models.Availability.where({guide_id: result4.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
+              .then(lastAvailability => {
+                console.log('Successfully created availability! TEST', lastAvailability);
+                res.status(200).send();
+              });
             });
           });
         });
@@ -31,8 +34,12 @@ module.exports.createAvailability = (req, res) => {
           models.Availability.forge({guide_id: result6.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement, start_date_hr: startDateHr, end_date_hr: endDateHr})
           .save()
           .then(result5 => {
-            console.log('Successfully created availability!');
-            res.status(200).send();
+            models.Availability.where({guide_id: result6.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
+            .then(lastAvailability => {
+              console.log('Successfully created availability! TEST', lastAvailability.attributes.id);
+
+              res.status(200).send();
+            });
           });
         });
       }
