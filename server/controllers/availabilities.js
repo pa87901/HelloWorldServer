@@ -1,4 +1,5 @@
 const models = require('../../db/models');
+const events = require('./events');
 
 module.exports.createAvailability = (req, res) => {
   const tzoffset = 0;
@@ -23,6 +24,8 @@ module.exports.createAvailability = (req, res) => {
               models.Availability.where({guide_id: result4.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
               .then(lastAvailability => {
                 console.log('Successfully created availability! TEST', lastAvailability);
+                // Insert events into database.
+                events.createEvents(req.body.events, lastAvailability.attributes.id);
                 res.status(200).send();
               });
             });
@@ -37,7 +40,8 @@ module.exports.createAvailability = (req, res) => {
             models.Availability.where({guide_id: result6.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
             .then(lastAvailability => {
               console.log('Successfully created availability! TEST', lastAvailability.attributes.id);
-
+              // Insert events into database.
+              events.createEvents(req.body.events, lastAvailability.attributes.id);
               res.status(200).send();
             });
           });
