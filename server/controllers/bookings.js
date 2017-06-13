@@ -16,12 +16,12 @@ module.exports.createBooking = (req, res) => {
         .save()
         .then(result => {
           console.log('success creating booking!!', result.id);
-          models.Booking.where({user_id: result.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
-          .then(lastBookingId => {
-            console.log('---lastBookingId---', lastBookingId);
-            // events.updateBookingIdOfEvent(lastBookingId.id, req.body.availabilityId);
-            res.status(200).send();
-          });
+          // models.Booking.where({user_id: result.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
+          // .then(lastBookingId => {
+            // console.log('---lastBookingId---', lastBookingId);
+          events.updateBookingIdOfEvent(result.id, req.body.availabilityId);
+          res.status(200).send();
+          // });
         });
       });
     });
