@@ -6,6 +6,7 @@ module.exports.http = http;
 const url = require('url');
 const db = require('../db');
 const fixieUrl = url.parse(process.env.FIXIE_URL);
+const requestUrl = 'https://localizetravel-staging.herokuapp.com/';
 const PORT = fixieUrl.port || 80;
 // const proxy = url.parse(process.env.PROXIMO_URL);
 // const PORT = proxy.port || 80;
