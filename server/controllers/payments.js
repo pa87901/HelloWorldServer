@@ -5,10 +5,10 @@ module.exports.createCharge = (req, res) => {
   var token = req.body.stripeToken;
 
   var charge = stripe.charges.create({
-    amount: 100,
+    amount: 100000,
     description: 'Test charge',
     currency: 'usd',
-    source: 'tok_visa',
+    source: token,
   }, function(err, charge) {
     if (err) {
       console.log('There is an error processing the charge', err);
