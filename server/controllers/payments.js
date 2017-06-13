@@ -8,7 +8,7 @@ module.exports.createCharge = (req, res) => {
     amount: 100,
     description: 'Test charge',
     currency: 'usd',
-    source: token,
+    source: 'tok_visa',
   }, function(err, charge) {
     if (err) {
       console.log('There is an error processing the charge', err);
