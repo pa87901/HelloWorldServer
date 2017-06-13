@@ -20,7 +20,7 @@ module.exports.createAvailability = (req, res) => {
             models.Availability.forge({guide_id: result4.id, city: req.body.city, hourly_rate: req.body.hourlyRate, intro: req.body.intro, statement: req.body.statement, start_date_hr: startDateHr, end_date_hr: endDateHr})
             .save()
             .then(result5 => {
-              console.log('Successfully created availability!');
+              console.log('Successfully created availability!', result5);
               res.status(200).send();
             });
           });

@@ -4,7 +4,7 @@ const collections = require('../../db/collections');
 module.exports.createEvents = (req, res) => {
   let eventsToSave = req.body.events.map(event => {
     return {
-      'availability_id': req.params.bookingId,
+      'availability_id': req.params.availabilityId,
       'type': '',
       'establishment_type': '',
       'event_name': event,
