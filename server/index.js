@@ -4,7 +4,7 @@ const app = require('./app');
 const http = require('http').Server(app);
 module.exports.http = http;
 const db = require('../db');
-const PORT = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 const workers = require('./workers');
 var CronJob = require('cron').CronJob;
 
