@@ -1,36 +1,27 @@
 const models = require('../../db/models');
+const collections = require('../../db/collections');
 
 module.exports.createEvents = (req, res) => {
-  var options = {};
-  console.log(req.body.events.eventsType);
-  // options [eventsType +'_id'] = eventId
-  options['availability_id'] = '1';
-  options['booking_id'] = '1';
-  models.Event.where(options).destroy()
-    .then((result)=> {
-      models.Event.forge(req.body.events.list).save();
-    });
-};
-
-
-req = {};
-req.body = {};
-req.body.events = {
-  eventsType: 'availability',
-  eventId: '1',
-  list: {
-    booking_id: '1',
-    availability_id: '1',
-    type: 'availability',
-    establishment_type: 'point_of_interest',
-    event_name: 'Legion of Honor, San Francisco, CA, United States',
-    longitude: '37.7863901802915',
-    latitude: '-122.4980650197085',
-    time_spent: '45',
-    travel_time: '7',
-    google_place_id: 'ChIJmUsJz6yHhYARS9zv8DkGiEQ',
-    google_maps_url: 'https://maps.google.com/?cid=4938203837336902731'
-  }
+  let eventsToSave = req.body.events.map(event => {
+    return {
+      'availability_id': req.params.bookingId,
+      'type': '',
+      'establishment_type': '',
+      'event_name': event,
+      'longitude': 0,
+      'latitude': 0
+    };
+  });
+  
+  // Create an object that is in the format required by the database to populate non-nullable columns
+  collections.Events.forge(eventsToSave)
+  .invokeThen('save')
+  .then(result => {
+    res.sendStatus(200);
+  })
+  .catch(err => {
+    res.sendStatus(404);
+  });
 };
 
 module.exports.getAvailabilitesEvents = (req, res) =>{

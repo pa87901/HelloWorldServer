@@ -4,8 +4,8 @@ const router = express.Router();
 const EventController = require('../controllers').Events;
 
 
-router.route('/:bookingId/:eventName')
-  .post(EventController.createEvent);
+router.route('/:bookingId')
+  .post(EventController.createEvents);
 
 router.route('/booking/:bookingId')
   .get(EventController.getEventsPerBooking);
