@@ -1,8 +1,8 @@
 'use strict';
 const app = require('./app');
 // Set up an http server for socket.io purposes.
-const http = require('http').Server(app);
-module.exports.http = http;
+const https = require('https').Server(app);
+module.exports.https = https;
 const db = require('../db');
 const PORT = process.env.PORT || 3000;
 const workers = require('./workers');
@@ -20,7 +20,7 @@ var job = new CronJob({
 // socket.io chat server.
 // Initialise new instance of socket.io by passing the http (HTTP Server) object.
 
-const io = require('socket.io')(http);
+const io = require('socket.io')(https);
 // const io = require('socket.io').Server({port: 8080});
 
 let users = [];
@@ -91,6 +91,6 @@ io.on('connection', (socket) => {
 
 /////////////////////////////////////////////
 
-http.listen(PORT, () => {
+https.listen(PORT, () => {
   console.log('Example app listening on port: ' + PORT);
 });
