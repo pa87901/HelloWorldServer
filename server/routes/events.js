@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const EventController = require('../controllers').Events;
 
-
-router.route('/:bookingId')
+router.route('/:availabilityId')
   .post(EventController.createEvents);
 
 router.route('/booking/:bookingId')
