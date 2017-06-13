@@ -6,7 +6,6 @@ module.exports.createCharge = (req, res) => {
 
   var charge = stripe.charges.create({
     amount: 1,
-    currency: 'usd',
     description: 'Test charge',
     source: token,
   }, function(err, charge) {
