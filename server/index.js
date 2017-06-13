@@ -115,6 +115,18 @@ io.on('connection', (socket) => {
 
 /////////////////////////////////////////////
 
+http.get({
+  host: fixieUrl.hostname,
+  port: fixieUrl.port,
+  path: requestUrl.href,
+  headers: {
+    Host: requestUrl.host,
+    'Proxy-Authorization': `Basic ${new Buffer(fixieUrl.auth).toString('base64')}`,
+  }
+}, res => {
+  console.log(`Got response: ${res.statusCode}`);
+});
+
 http.listen(PORT, () => {
   console.log('Example app listening on port: ' + PORT);
   console.log('THIS IS FIXIE URL', process.env.FIXIE_URL);
