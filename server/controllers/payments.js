@@ -5,7 +5,7 @@ module.exports.createCharge = (req, res) => {
   var token = req.body.stripeToken;
 
   var charge = stripe.charges.create({
-    amount: 1,
+    amount: 100,
     description: 'Test charge',
     source: token,
   }, function(err, charge) {
