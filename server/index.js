@@ -3,13 +3,8 @@ const app = require('./app');
 // Set up an http server for socket.io purposes.
 const http = require('http').Server(app);
 module.exports.http = http;
-const url = require('url');
 const db = require('../db');
-const fixieUrl = url.parse(process.env.FIXIE_URL);
-const requestUrl = 'https://localizetravel-staging.herokuapp.com/';
-const PORT = fixieUrl.port || 80;
-// const proxy = url.parse(process.env.PROXIMO_URL);
-// const PORT = proxy.port || 80;
+const PORT = process.env.port || 3000;
 const workers = require('./workers');
 var CronJob = require('cron').CronJob;
 
@@ -59,27 +54,7 @@ io.on('connection', (socket) => {
     }
   };
   chatsController.getChat(req, null, (data) => {
-    let req2 = {
-      params: {
-        facebookId: socket.handshake.query.guideId,
-        guideFacebookId: socket.handshake.query.userId,
-      }
-    };
-    chatsController.getChat(req2, null, (data2) => {
-      // Combine the chats.
-      if (!data.models.length) {
-        data = {models: []};
-      }
-      if (!data2.models.length) {
-        data2 = {models: []};
-      }
-      data = data.models.concat(data2.models);
-      // data.sort((a, b) => {
-      //   return a.
-      // })
-      console.log('DATA', data, data.length);
-      io.emit('chat message', JSON.parse(JSON.stringify(data)));
-    });
+    io.emit('chat message', JSON.parse(JSON.stringify(data)));
   });
 
 
@@ -116,15 +91,6 @@ io.on('connection', (socket) => {
 
 /////////////////////////////////////////////
 
-http.listen({
-  host: fixieUrl.hostname,
-  port: fixieUrl.port,
-  path: requestUrl.href,
-  headers: {
-    Host: requestUrl.host,
-    'Proxy-Authorization': `Basic ${new Buffer(fixieUrl.auth).toString('base64')}`,
-  }
-}, () => {
+http.listen(PORT, () => {
   console.log('Example app listening on port: ' + PORT);
-  console.log('THIS IS FIXIE URL', process.env.FIXIE_URL);
 });
