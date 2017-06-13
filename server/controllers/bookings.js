@@ -1,10 +1,11 @@
 const models = require('../../db/models');
+const events = require('./events');
 
 module.exports.createBooking = (req, res) => {
   const tzoffset = 0;
   const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString();
   const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString();
-
+  console.log('availabilityId', req.body.availabilityId, req.body);
   models.User.where({facebook_id: req.body.travelerId}).fetch({columns: ['id']})
   .then(result => {
     models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
@@ -15,7 +16,12 @@ module.exports.createBooking = (req, res) => {
         .save()
         .then(result => {
           console.log('success creating booking!!');
-          res.status(200).send();
+          models.Booking.where({user_id: result2.id}).orderBy('id', 'DESC').fetch({columns: ['id']})
+          .then(lastBookingId => {
+            // console.log('lastBookingId', lastBookingId.id);
+            events.updateBookingIdOfEvent(lastBookingId.id, req.body.availabilityId);
+            res.status(200).send();
+          });
         });
       });
     });

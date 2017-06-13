@@ -1,10 +1,10 @@
 const models = require('../../db/models');
 const collections = require('../../db/collections');
 
-module.exports.createEvents = (req, res) => {
-  let eventsToSave = req.body.events.map(event => {
+module.exports.createEvents = (events, availabilityId) => {
+  let eventsToSave = events.map(event => {
     return {
-      'availability_id': req.params.availabilityId,
+      'availability_id': availabilityId,
       'type': '',
       'establishment_type': '',
       'event_name': event,
@@ -16,11 +16,14 @@ module.exports.createEvents = (req, res) => {
   // Create an object that is in the format required by the database to populate non-nullable columns
   collections.Events.forge(eventsToSave)
   .invokeThen('save')
+  // .then(result => {
+  //   res.sendStatus(200);
+  // })
+  // .catch(err => {
+  //   res.sendStatus(404);
+  // });
   .then(result => {
-    res.sendStatus(200);
-  })
-  .catch(err => {
-    res.sendStatus(404);
+    return result;
   });
 };
 
@@ -28,10 +31,26 @@ module.exports.getAvailabilitesEvents = (req, res) =>{
 
 };
 
-module.exports.createEvent = (req, res) => {
-  // models.Event.where({booking_id: req.params.bookingId}).fetch({colums: ['availability_id']})
-  // .then()
-  
+module.exports.updateBookingIdOfEvent = (bookingId, availabilityId) => {
+  // models.Event.forge()
+  // .where({availability_id: availabilityId})
+  // .save({booking_id: bookingId},{patch:true})
+  // .then(result => {
+  //   return result;
+  // })
+  console.log('availabilityId', availabilityId, 'bookingId', bookingId);
+  models.Event.where({availability_id: availabilityId}).fetchAll()
+  .then(fetchedEvents => {
+    console.log('fetchedEvents', fetchedEvents);
+    fetchedEvents.forEach(fetchedEvent => {
+      fetchedEvent.save({booking_id: bookingId}).then(result => {
+        console.log('saved');
+      });
+    });
+  })
+  .catch(err => {
+    console.error('Error updating events.');
+  });
 };
 
 module.exports.getEventsPerBooking = (req, res) => {
