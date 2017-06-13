@@ -1,8 +1,7 @@
 const models = require('../../db/models');
 const redis = require('redis');
-const config = require('../../config/secrets.js');
 
-let client = redis.createClient();
+let client = redis.createClient(process.env.REDIS_URL);
 client.on('connect', () => {
   console.log('redis connected');
 });

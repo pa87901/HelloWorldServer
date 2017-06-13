@@ -1,14 +1,14 @@
-const STRIPE_API_KEY = require('../../config/secrets').STRIPE_API_KEY;
+const STRIPE_API_KEY = process.env.STRIPE_API_KEY || require('../../config/secrets').STRIPE_API_KEY;
 const stripe = require('stripe')(STRIPE_API_KEY);
 
 module.exports.createCharge = (req, res) => {
   var token = req.body.stripeToken;
 
   var charge = stripe.charges.create({
-    amount: 1,
-    currency: 'usd',
+    amount: 100000,
     description: 'Test charge',
-    source: token,
+    currency: 'usd',
+    source: 'tok_visa',
   }, function(err, charge) {
     if (err) {
       console.log('There is an error processing the charge', err);
