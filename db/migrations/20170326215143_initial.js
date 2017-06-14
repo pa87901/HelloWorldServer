@@ -42,7 +42,7 @@ exports.up = function (knex, Promise) {
       table.increments('id').unsigned().primary();
       table.text('message').nullable();
       table.integer('user_id').references('users.id').onDelete('CASCADE');
-      table.integer('guide_id').references('guides.id').onDelete('CASCADE');
+      table.integer('guide_id').references('users.id').onDelete('CASCADE');
       table.string('author', 15).notNullable();
       table.timestamps(true, true);
     }),

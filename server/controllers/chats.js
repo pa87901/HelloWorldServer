@@ -97,7 +97,7 @@ module.exports.getChat = (req, res, callback) => {
             'user': (qb) => {
               qb.select();
             }
-          },
+          },          
           {
             'guide.user': (qb) => {
               qb.select();
@@ -108,13 +108,20 @@ module.exports.getChat = (req, res, callback) => {
       .then(chats => {
         chats = JSON.parse(JSON.stringify(chats));
         chats = chats.filter(chat=> {
-          // console.log(JSON.stringify(chat.user_id), result.id, result2.id)
+          // console.log(chat.user_id, result.id, result2.id)
           if ((chat.user_id === result.id && chat.guide_id === result2.id) ||
             (chat.user_id === result2.id && chat.guide_id === result.id)) {
             return true;
           }
           return false;
         });
+
+        var promiseArray = [];
+        var queries = [];
+        var result = [];
+
+
+        //chats.forEach(chat)
         // console.log('seeing all chat messages',JSON.stringify(chats))
         if (!chats) {
           throw chats;
