@@ -3,8 +3,8 @@ const express = require('express');
 const router = express.Router();
 const EventController = require('../controllers').Events;
 
-router.route('/:availabilityId')
-  .post(EventController.createEvents);
+// router.route('/:availabilityId')
+//   .post(EventController.createEvents);
 
 // router.route('/booking/:bookingId')
 //   .post(EventController.attachBookingIdToEvent);
@@ -14,6 +14,9 @@ router.route('/booking/:bookingId')
 
 router.route('/remove/:bookingId/:eventName')
   .delete(EventController.removeEventForABooking);
+
+router.route('/add')
+  .post(EventController.addEventForABooking);
 
 
 module.exports = router;
