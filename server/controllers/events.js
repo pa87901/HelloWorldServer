@@ -81,6 +81,28 @@ module.exports.getEventsPerBooking = (req, res) => {
   });
 };
 
+module.exports.addEventForABooking = (req, res) => {
+  console.log('HELLO IM ADDING EVENTS!!!', req.body);
+  let eventToAdd = {
+    availability_id: null,
+    booking_id: req.body.bookingId,
+    type: 'booking',
+    establishment_type: 'point_of_interest',
+    event_name: req.body.eventName,
+    longitude: 0,
+    latitude: 0
+  };
+  models.Event.forge(eventToAdd)
+  .save()
+  .then(result => {
+    console.log(result);
+    res.sendStatus(200);
+  })
+  .catch(err => {
+    res.sendStatus(404);
+  });
+};
+
 module.exports.removeEventForABooking = (req, res) => {
   models.Event.where({booking_id: req.params.bookingId, event_name: req.params.eventName}).destroy({require: true})
   .then(response => {
