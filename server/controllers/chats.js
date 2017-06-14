@@ -6,17 +6,17 @@ module.exports.createChat = (req, res) => {
   .then(result => {
     models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
-      models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
-      .then(result3 => {
-        models.Chat.forge({user_id: result.id, guide_id: result3.id, message: req.body.message, author: ''})
-        .save()
-        .then(result4 => {
-          if (res) {
-            res.status(200).send();
-          }
-          console.log('Successfully created chat!!');
-        });
+      // models.User.where({user_id: result2.id}).fetch({columns: ['id']})
+      // .then(result3 => {
+      models.Chat.forge({user_id: result.id, guide_id: result2.id, message: req.body.message, author: ''})
+      .save()
+      .then(result4 => {
+        if (res) {
+          res.status(200).send();
+        }
+        console.log('Successfully created chat!!');
       });
+      // });
     });
   })
   .error(err => {
@@ -81,44 +81,56 @@ module.exports.getChat = (req, res, callback) => {
   .then(result => {
     models.User.where({facebook_id: req.params.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
-      models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
-      .then(result3 => {
-        models.Chat.query(qb => {
-          qb.limit(100);
-          qb.orderBy('created_at', 'desc');
-          qb.where({user_id: result.id})
-          .andWhere({guide_id: result3.id});
-        })
-        .fetchAll({
-          withRelated: [
-            {
-              'user': (qb) => {
-                qb.select();
-              }
-            },
-            {
-              'guide.user': (qb) => {
-                qb.select();
-              }
+      // models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
+      // .then(result3 => {
+      models.Chat.query(qb => {
+        qb.limit(100);
+        qb.orderBy('created_at', 'desc');
+        qb.where({user_id: result.id})
+        .orWhere({user_id: result2.id})
+        .orWhere({guide_id: result2.id})
+        .orWhere({guide_id: result.id});
+      })
+      .fetchAll({
+        withRelated: [
+          {
+            'user': (qb) => {
+              qb.select();
             }
-          ]
-        })
-        .then(chats => {
-          if (!chats) {
-            throw chats;
+          },
+          {
+            'guide.user': (qb) => {
+              qb.select();
+            }
           }
-          if (res) {
-            res.status(200).send(chats);
-          } else {
-            callback(chats);
+        ]
+      })
+      .then(chats => {
+        chats = JSON.parse(JSON.stringify(chats));
+        chats = chats.filter(chat=> {
+          // console.log(JSON.stringify(chat.user_id), result.id, result2.id)
+          if ((chat.user_id === result.id && chat.guide_id === result2.id) ||
+            (chat.user_id === result2.id && chat.guide_id === result.id)) {
+            return true;
           }
-          console.log('Successfully fetched chats!!');
-        })
-        .catch(error => {
-          console.log('error on catch', error);
-          res.status(404).send([]);
+          return false;
         });
+        // console.log('seeing all chat messages',JSON.stringify(chats))
+        if (!chats) {
+          throw chats;
+        }
+        if (res) {
+          res.status(200).send(chats);
+        } else {
+          callback(chats);
+        }
+        console.log('Successfully fetched chats!!');
+      })
+      .catch(error => {
+        console.log('error on catch', error);
+        res.status(404).send([]);
       });
+      // });
     });
   })
   // res.sendStatus(200);
