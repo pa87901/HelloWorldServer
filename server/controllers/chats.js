@@ -1,4 +1,6 @@
 const models = require('../../db/models');
+const Promise = require('bluebird');
+
 
 module.exports.createChat = (req, res) => {
   console.log('req.body in createChat method', req.body);
@@ -75,48 +77,43 @@ module.exports.createChat = (req, res) => {
 //     });
 // };
 
+
 module.exports.getChat = (req, res, callback) => {
   console.log('REQ PARAMS', req.params);
   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
-  .then(result => {
+  .then(user1 => {
     models.User.where({facebook_id: req.params.guideFacebookId}).fetch({columns: ['id']})
-    .then(result2 => {
+    .then(user2 => {
+      // console.log(result.id, result2.id)
       // models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
       // .then(result3 => {
       models.Chat.query(qb => {
+        // userId = result.id;
+        // userId2 = result2.id;
+        console.log("Result1", user1);
         qb.limit(100);
         qb.orderBy('created_at', 'desc');
-        qb.where({user_id: result.id})
-        .orWhere({user_id: result2.id})
-        .orWhere({guide_id: result2.id})
-        .orWhere({guide_id: result.id});
+        qb.where({user_id: user1.id})
+        .orWhere({user_id: user2.id})
+        .orWhere({guide_id: user2.id})
+        .orWhere({guide_id: user1.id});
       })
       .fetchAll({
-        withRelated: [
-          {
-            'user': (qb) => {
-              qb.select();
-            }
-          },          
-          {
-            'guide.user': (qb) => {
-              qb.select();
-            }
-          }
-        ]
+        withRelated: ['user', 'guide']
       })
       .then(chats => {
         chats = JSON.parse(JSON.stringify(chats));
-        chats = chats.filter(chat=> {
-          // console.log(chat.user_id, result.id, result2.id)
-          if ((chat.user_id === result.id && chat.guide_id === result2.id) ||
-            (chat.user_id === result2.id && chat.guide_id === result.id)) {
-            return true;
-          }
-          return false;
-        });
+        // chats = chats.filter(chat=> {
+        //   if ((chat.user_id === user1.id && chat.guide_id === user2.id) ||
+        //     (chat.user_id === user2.id && chat.guide_id === user1.id)) {
+        //     return true;
+        //   }
+        //   return false;
+        // });
 
-        var promiseArray = [];
+        var promiseArray = chats.forEach((chat)=>{
+
+        });
         var queries = [];
         var result = [];
 
@@ -150,35 +147,6 @@ module.exports.getChat = (req, res, callback) => {
 };
 
 
-
-
-
-// module.exports.getAllChatsByUser = (req, res) => {
-//   console.log('REQ PARAMS1', req.params);
-//   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
-//   .then(result => {
-//     models.Chat.query((qb) => {
-//       qb.limit(100); 
-//       qb.orderBy('created_at', 'desc');
-//     })
-//       .where({user_id: result.id}).fetchAll()
-//       .then(chats => {
-//         if (!chats) {
-//           throw chats;
-//         }
-//         res.status(200).send(chats);
-//         console.log('Successfully fetched all chats for user!!');
-//       });
-//   })
-//     .error(err => {
-//       res.status(500).send(err);
-//     })
-//     .catch((error) => {
-//       res.status(404).send([]);
-//       console.log(error);
-//     });
-// };
-
 module.exports.getAllChatsByUser = (req, res) => {
   console.log('REQ PARAMS1', req.params);
   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
@@ -191,25 +159,12 @@ module.exports.getAllChatsByUser = (req, res) => {
         qb.where({user_id: result.id})
         .orWhere({guide_id: result2.id});
       })
-      .fetchAll({
-        withRelated: [
-          {
-            'user': (qb) => {
-              qb.select();
-            }
-          },
-          {
-            'guide.user': (qb) => {
-              qb.select();
-            }
-          }
-        ]
-      })
+      // .fetch()
       .then(chats => {
         if (!chats) {
           throw chats;
         }
-        res.status(200).send(chats);
+        // res.status(200).send(chats);
         console.log('Successfully fetched all chats for user!!', chats.length);
       });
     });

@@ -6,7 +6,7 @@ const Chat = db.Model.extend({
     return this.belongsTo('User');
   },
   guide: function() {
-    return this.belongsTo('Guide');
+    return this.belongsTo('User', 'guide_id');
   }
 });
 
