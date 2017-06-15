@@ -94,7 +94,7 @@ module.exports.getSearchResults = (req, res) => {
           });
           
           profile.availabilities = profile.availabilities.filter(post => {
-            return new Date(`${req.params.date}, ${req.params.toHour}:00`) <= new Date(post.end_date_hr) && new Date(`${req.params.date}, ${req.params.fromHour}:00`) >= new Date(post.start_date_hr);
+            return new Date(Number(req.params.date) + Number(req.params.fromHour) * 3600000) >= new Date(post.start_date_hr) && new Date(Number(req.params.date) + Number(req.params.toHour) * 3600000) <= new Date(post.end_date_hr);
           });
 
         });
@@ -157,7 +157,6 @@ module.exports.getSearchResults = (req, res) => {
         });
         
         profile.availabilities = profile.availabilities.filter(post => {
-
           return new Date(Number(req.params.date) + Number(req.params.fromHour) * 3600000) >= new Date(post.start_date_hr) && new Date(Number(req.params.date) + Number(req.params.toHour) * 3600000) <= new Date(post.end_date_hr);
         });
       });
