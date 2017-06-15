@@ -29,55 +29,6 @@ module.exports.createChat = (req, res) => {
     });
 };
 
-// module.exports.getChat = (req, res, callback) => {
-//   console.log('REQ PARAMS', req.params);
-//   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
-//   .then(result => {
-//     models.User.where({id: req.params.guideFacebookId}).fetch({columns: ['id']})
-//     .then(result2 => {
-//       models.Guide.where({user_id: result2.id}).fetch({columns: ['id']})
-//       .then(result3 => {
-//         models.Chat.query((qb) => {
-//           qb.limit(100); 
-//           qb.orderBy('created_at', 'desc');
-//         })
-//           .where({user_id: result.id, guide_id: result3.id}).fetchAll({
-//             withRelated: [
-//               {
-//                 'user': (qb) => {
-//                   qb.select();
-//                 }
-//               },
-//               {
-//                 'guide.user': (qb) => {
-//                   qb.select();
-//                 }
-//               }
-//             ]
-//           })
-//           .then(chats => {
-//             if (!chats) {
-//               throw chats;
-//             }
-//             if (res) {
-//               res.status(200).send(chats);
-//             } else {
-//               callback(chats);
-//             }
-//             console.log('Successfully fetched chats!!');
-//           });
-//       });
-//     });
-//   })
-//     .error(err => {
-//       res.status(500).send(err);
-//     })
-//     .catch(() => {
-//       res.status(404).send([]);
-//     });
-// };
-
-
 module.exports.getChat = (req, res, callback) => {
   console.log('REQ PARAMS', req.params);
   models.User.where({facebook_id: req.params.facebookId}).fetch({columns: ['id']})
