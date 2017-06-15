@@ -4,8 +4,8 @@ const events = require('./events');
 module.exports.createAvailability = (req, res) => {
   const tzoffset = 0;
 
-  const startDateHr = new Date(new Date(req.body.startDateHr).getTime() - tzoffset).toISOString();
-  const endDateHr = new Date(new Date(req.body.endDateHr).getTime() - tzoffset).toISOString();
+  const startDateHr = new Date(Number(req.body.startDateHr)).toISOString();
+  const endDateHr = new Date(Number(req.body.endDateHr)).toISOString();
 
   models.User.where({facebook_id: req.body.facebookId}).fetch({columns: ['id']})
   .then(result => {
