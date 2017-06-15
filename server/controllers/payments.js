@@ -3,9 +3,10 @@ const stripe = require('stripe')(STRIPE_API_KEY);
 
 module.exports.createCharge = (req, res) => {
   var token = req.body.stripeToken;
+  var chargeAmt = req.body.amount * 100;
 
   var charge = stripe.charges.create({
-    amount: 100000,
+    amount: chargeAmt,
     description: 'Test charge',
     currency: 'usd',
     source: 'tok_visa',
