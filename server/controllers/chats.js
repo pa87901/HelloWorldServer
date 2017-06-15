@@ -8,8 +8,6 @@ module.exports.createChat = (req, res) => {
   .then(result => {
     models.User.where({facebook_id: req.body.guideFacebookId}).fetch({columns: ['id']})
     .then(result2 => {
-      // models.User.where({user_id: result2.id}).fetch({columns: ['id']})
-      // .then(result3 => {
       models.Chat.forge({user_id: result.id, guide_id: result2.id, message: req.body.message, author: ''})
       .save()
       .then(result4 => {
@@ -18,7 +16,6 @@ module.exports.createChat = (req, res) => {
         }
         console.log('Successfully created chat!!');
       });
-      // });
     });
   })
   .error(err => {
